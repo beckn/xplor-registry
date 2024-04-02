@@ -11,17 +11,25 @@ import { IssueCredentialRequestEntityDto } from '../entity/issue-credential-requ
 import { MessageResponseEntity } from '../entity/message-response.entity'
 import { SchemaDetailsResponseEntity } from '../entity/schema-details-response.entity'
 import { TemplateDetailsResponseEntity } from '../entity/template-details-response.entity'
-import { CredentialSchemaService } from '../service/credential-schema.service'
+import { CredentialSchemaCreateService } from '../service/credential-schema-create.service'
+import { CredentialSchemaDeleteService } from '../service/credential-schema-delete.service'
+import { CredentialSchemaReadService } from '../service/credential-schema-read.service'
+import { CredentialSchemaUpdateService } from '../service/credential-schema-update.service'
 import { UserDidService } from '../service/user-did.service'
-import { VerifiableCredentialService } from '../service/verifiable-credential.service'
+import { VerifiableCredentialCreateService } from '../service/verifiable-credential-create.service'
+import { VerifiableCredentialReadService } from '../service/verifiable-credential-read.service'
 
 @ApiTags('Registry')
 @Controller('registry')
 export class RegistryController {
   constructor(
     private readonly userDidService: UserDidService,
-    private readonly schemaService: CredentialSchemaService,
-    private readonly vcService: VerifiableCredentialService,
+    private readonly schemaCreateService: CredentialSchemaCreateService,
+    private readonly schemaReadService: CredentialSchemaReadService,
+    private readonly schemaUpdateService: CredentialSchemaUpdateService,
+    private readonly schemaDeleteService: CredentialSchemaDeleteService,
+    private readonly vcCreateService: VerifiableCredentialCreateService,
+    private readonly vcReadService: VerifiableCredentialReadService,
   ) {}
 
   /**
@@ -59,7 +67,7 @@ export class RegistryController {
     type: SchemaDetailsResponseEntity,
   })
   async createCredentialSchema(@Body() body: CreateSchemaRequestDto) {
-    const schemaResult = await this.schemaService.createSchema(body)
+    const schemaResult = await this.schemaCreateService.createSchema(body)
     return schemaResult
   }
 
@@ -79,7 +87,7 @@ export class RegistryController {
     type: SchemaDetailsResponseEntity,
   })
   async getCredentialSchemaByIdAndVersion(@Query() queryParams: GetSchemaDetailsRequestDto) {
-    const schemaResult = await this.schemaService.getCredentialSchemaByIdAndVersion(queryParams)
+    const schemaResult = await this.schemaReadService.getCredentialSchemaByIdAndVersion(queryParams)
     return schemaResult
   }
 
@@ -99,7 +107,7 @@ export class RegistryController {
     type: SchemaDetailsResponseEntity,
   })
   async updateSchemaStatus(@Body() body: UpdateCredentialStatusRequestDto) {
-    const schemaResult = await this.schemaService.updateSchemaStatus(body)
+    const schemaResult = await this.schemaUpdateService.updateSchemaStatus(body)
     return schemaResult
   }
 
@@ -119,7 +127,7 @@ export class RegistryController {
     type: SchemaDetailsResponseEntity,
   })
   async updateSchemaProperties(@Body() body: UpdateSchemaRequestDto) {
-    const schemaResult = await this.schemaService.updateSchemaProperties(body)
+    const schemaResult = await this.schemaUpdateService.updateSchemaProperties(body)
     return schemaResult
   }
 
@@ -139,7 +147,7 @@ export class RegistryController {
     type: TemplateDetailsResponseEntity,
   })
   async createCredentialSchemaTemplate(@Body() templateBody: CreateTemplateRequestBodyDto) {
-    const templateResult = await this.schemaService.createCredentialSchemaTemplate(templateBody)
+    const templateResult = await this.schemaCreateService.createCredentialSchemaTemplate(templateBody)
     return templateResult
   }
 
@@ -159,7 +167,7 @@ export class RegistryController {
     type: SchemaDetailsResponseEntity,
   })
   async getCredentialTemplateById(@Query('templateId') templateId: string) {
-    const schemaResult = await this.schemaService.getCredentialTemplateById(templateId)
+    const schemaResult = await this.schemaReadService.getCredentialTemplateById(templateId)
     return schemaResult
   }
 
@@ -179,7 +187,7 @@ export class RegistryController {
     type: MessageResponseEntity,
   })
   async deleteCredentialTemplate(@Query('templateId') templateId: string) {
-    const schemaResult = await this.schemaService.deleteCredentialTemplate(templateId)
+    const schemaResult = await this.schemaDeleteService.deleteCredentialTemplate(templateId)
     return schemaResult
   }
 
@@ -197,7 +205,7 @@ export class RegistryController {
   @ApiBody({ type: IssueCredentialRequestEntityDto })
   @ApiResponse({ status: 201, description: 'Verifiable credential issued successfully.' })
   async issueCredential(@Body() didRequest: IssueCredentialRequestDto) {
-    const vcResult = await this.vcService.issueCredential(didRequest)
+    const vcResult = await this.vcCreateService.issueCredential(didRequest)
     return vcResult
   }
 
@@ -214,7 +222,7 @@ export class RegistryController {
   })
   @ApiResponse({ status: 200, description: 'Verifiable credential verified successfully.' })
   async verifyCredential(@Param('vcId') vcId: string) {
-    const vcResult = await this.vcService.verifyCredential(vcId)
+    const vcResult = await this.vcCreateService.verifyCredential(vcId)
     return vcResult
   }
 
@@ -242,9 +250,9 @@ export class RegistryController {
     let vcResult = {}
     if (outputType == 'application/pdf' || outputType == 'text/html') {
       // Returns pdf/html
-      await this.vcService.getVcVisualDocument(vcId, outputType, templateId, res)
+      await this.vcReadService.getVcVisualDocument(vcId, outputType, templateId, res)
     } else {
-      vcResult = await this.vcService.getVcDetailsById(vcId)
+      vcResult = await this.vcReadService.getVcDetailsById(vcId)
       res.send(vcResult)
     }
   }
