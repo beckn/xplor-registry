@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, Headers, Param, Patch, Post, Put, Query, Res } from '@nestjs/common'
 import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiRoutes } from 'src/common/constants/api-routes'
 import { CreateSchemaRequestDto } from '../dto/create-schema-request-body.dto'
 import { CreateTemplateRequestBodyDto } from '../dto/create-template-request-body.dto'
 import { CreateUserDIDRequestDto } from '../dto/create-user-did-request.dto'
@@ -37,7 +38,7 @@ export class RegistryController {
    * @param didRequest The request body containing data required to generate the DID.
    * @returns The generated user DID if successful.
    */
-  @Post('/did')
+  @Post(ApiRoutes.GENERATE_USER_DID)
   @ApiOperation({
     summary: 'Generate User DID',
     description:
@@ -55,7 +56,7 @@ export class RegistryController {
    * @body body The request body containing data required to create the credential Schema.
    * @returns The result of the api would be the details of the created Schema.
    */
-  @Post('/credential-schema')
+  @Post(ApiRoutes.CREDENTIAL_SCHEMA)
   @ApiOperation({
     summary: 'Create Credential Schema',
     description:
@@ -76,7 +77,7 @@ export class RegistryController {
    * @param didRequest The request params containing schemaId and schemaVersion to fetch Schema details
    * @returns The result of the api would be the details of the fetched Schema.
    */
-  @Get('/credential-schema')
+  @Get(ApiRoutes.CREDENTIAL_SCHEMA)
   @ApiOperation({
     summary: 'Get Credential Schema by schema id and version',
     description: 'Returns the Schema details with the entered schema id and the version.',
@@ -96,7 +97,7 @@ export class RegistryController {
    * @body didRequest The request params containing schemaId and schemaVersion, stauts to update Schema
    * @returns The result of the api would be the details of the updated Schema.
    */
-  @Patch('/credential-schema')
+  @Patch(ApiRoutes.CREDENTIAL_SCHEMA)
   @ApiOperation({
     summary: 'Update Credential Schema status',
     description: 'Returns the Updated Schema details with the updated status.',
@@ -116,7 +117,7 @@ export class RegistryController {
    * @body didRequest The request params containing payload to update Schema same as the create Schema.
    * @returns The result of the api would be the details of the updated Schema.
    */
-  @Put('/credential-schema')
+  @Put(ApiRoutes.CREDENTIAL_SCHEMA)
   @ApiOperation({
     summary: 'Update Credential Schema',
     description: 'Returns the Updated Schema details with the updated fields.',
@@ -136,7 +137,7 @@ export class RegistryController {
    * @body The body takes html template of the Credential Schema.
    * @returns The result of the api would be the details of the created Template
    */
-  @Post('/credential-template')
+  @Post(ApiRoutes.CREDENTIAL_TEMPLATE)
   @ApiOperation({
     summary: 'Create Credential Schema Template',
     description: 'Create Schema Template to render the document of the VC in pdf, html format.',
@@ -156,7 +157,7 @@ export class RegistryController {
    * @param didRequest The request params containing schemaId and schemaVersion to fetch Schema details
    * @returns The result of the api would be the details of the fetched Schema.
    */
-  @Get('/credential-template')
+  @Get(ApiRoutes.CREDENTIAL_TEMPLATE)
   @ApiOperation({
     summary: 'Get Credential template by template id',
     description: 'Returns the template details with the entered template id.',
@@ -176,7 +177,7 @@ export class RegistryController {
    * @param didRequest The request params containing schemaId and schemaVersion to fetch Schema details
    * @returns The result of the api would be the details of the fetched Schema.
    */
-  @Delete('/credential-template')
+  @Delete(ApiRoutes.CREDENTIAL_TEMPLATE)
   @ApiOperation({
     summary: 'Delete Credential template',
     description: 'Delete the template using the templateId',
@@ -196,7 +197,7 @@ export class RegistryController {
    * @param didRequest The request body containing data required to issue the credential.
    * @returns The result of issuing the verifiable credential if successful.
    */
-  @Post('/credentials')
+  @Post(ApiRoutes.CREDENTIAL)
   @ApiOperation({
     summary: 'Issue Credential',
     description:
@@ -214,7 +215,7 @@ export class RegistryController {
    * @param vcId The ID or QR code of the verifiable credential to verify.
    * @returns The result of verifying the verifiable credential if successful.
    */
-  @Get('credentials/:vcId/verify')
+  @Get(`${ApiRoutes.CREDENTIAL}/:vcId/verify`)
   @ApiOperation({
     summary: 'Verify Credential',
     description:
@@ -233,7 +234,7 @@ export class RegistryController {
    * @param templateId The ID of the template to use for generating the response.
    * @param res The response object used to send the response.
    */
-  @Get('credentials/:vcId')
+  @Get(`${ApiRoutes.CREDENTIAL}/:vcId`)
   @ApiOperation({
     summary: 'Get Verifiable Credential Details by VcId',
     description:
