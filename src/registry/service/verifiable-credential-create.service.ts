@@ -90,9 +90,7 @@ export class VerifiableCredentialCreateService {
     }
 
     if (vcDetails['status'] == 'ISSUED') {
-      return {
-        data: vcDetails,
-      }
+      return vcDetails
     } else {
       throw new UnauthorizedException(RegistryErrors.INVALID_CREDENTIAL)
     }

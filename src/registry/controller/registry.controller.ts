@@ -1,5 +1,18 @@
 import { Body, Controller, Delete, Get, Headers, Param, Patch, Post, Put, Query, Res } from '@nestjs/common'
 import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger'
+import {
+  CREATE_CREDENTIAL_SCHEMA_API,
+  CREATE_CREDENTIAL_TEMPLATE_API,
+  DELETE_CREDENTIAL_TEMPLATE_API,
+  GENERATE_USER_DID_API,
+  GET_CREDENTIAL_API,
+  GET_CREDENTIAL_SCHEMA_BY_ID_API,
+  GET_CREDENTIAL_TEMPLATE_API,
+  ISSUE_CREDENTIAL_API,
+  UPDATE_SCHEMA_PROPERTIES_API,
+  UPDATE_SCHEMA_STATUS_API,
+  VERIFY_CREDENTIAL_API,
+} from 'src/common/constants/api-documentation'
 import { ApiRoutes } from 'src/common/constants/api-routes'
 import { CreateSchemaRequestDto } from '../dto/create-schema-request-body.dto'
 import { CreateTemplateRequestBodyDto } from '../dto/create-template-request-body.dto'
@@ -40,12 +53,14 @@ export class RegistryController {
    */
   @Post(ApiRoutes.GENERATE_USER_DID)
   @ApiOperation({
-    summary: 'Generate User DID',
-    description:
-      'Generates a new user DID using Sunbird RC. This did acts as a issuer/administrator for all the actions like issuing VC, creating certificate Schema in Sunbird RC.',
+    summary: GENERATE_USER_DID_API.summary,
+    description: GENERATE_USER_DID_API.description,
   })
   @ApiBody({ type: CreateUserDIDRequestDto })
-  @ApiResponse({ status: 201, description: 'User DID generated successfully.' })
+  @ApiResponse({
+    status: GENERATE_USER_DID_API.successResponseCode,
+    description: GENERATE_USER_DID_API.successResponseMessage,
+  })
   async generateUserDid(@Body() didRequest: CreateUserDIDRequestDto) {
     const generateDid = await this.userDidService.generateUserDid(didRequest)
     return generateDid
@@ -58,13 +73,12 @@ export class RegistryController {
    */
   @Post(ApiRoutes.CREDENTIAL_SCHEMA)
   @ApiOperation({
-    summary: 'Create Credential Schema',
-    description:
-      'Create a Schema for the credential for your VCs. This schema contains the subject details of the VC like FullName, CourseName etc.',
+    summary: CREATE_CREDENTIAL_SCHEMA_API.summary,
+    description: CREATE_CREDENTIAL_SCHEMA_API.description,
   })
   @ApiResponse({
-    status: 201,
-    description: 'Credential Schema created successfully.',
+    status: CREATE_CREDENTIAL_SCHEMA_API.successResponseCode,
+    description: CREATE_CREDENTIAL_SCHEMA_API.successResponseMessage,
     type: SchemaDetailsResponseEntity,
   })
   async createCredentialSchema(@Body() body: CreateSchemaRequestDto) {
@@ -79,12 +93,12 @@ export class RegistryController {
    */
   @Get(ApiRoutes.CREDENTIAL_SCHEMA)
   @ApiOperation({
-    summary: 'Get Credential Schema by schema id and version',
-    description: 'Returns the Schema details with the entered schema id and the version.',
+    summary: GET_CREDENTIAL_SCHEMA_BY_ID_API.summary,
+    description: GET_CREDENTIAL_SCHEMA_BY_ID_API.description,
   })
   @ApiResponse({
-    status: 200,
-    description: 'Credential Schema details fetched successfully.',
+    status: GET_CREDENTIAL_SCHEMA_BY_ID_API.successResponseCode,
+    description: GET_CREDENTIAL_SCHEMA_BY_ID_API.successResponseMessage,
     type: SchemaDetailsResponseEntity,
   })
   async getCredentialSchemaByIdAndVersion(@Query() queryParams: GetSchemaDetailsRequestDto) {
@@ -99,12 +113,12 @@ export class RegistryController {
    */
   @Patch(ApiRoutes.CREDENTIAL_SCHEMA)
   @ApiOperation({
-    summary: 'Update Credential Schema status',
-    description: 'Returns the Updated Schema details with the updated status.',
+    summary: UPDATE_SCHEMA_STATUS_API.summary,
+    description: UPDATE_SCHEMA_STATUS_API.description,
   })
   @ApiResponse({
-    status: 200,
-    description: 'Credential Schema status updated successfully.',
+    status: UPDATE_SCHEMA_STATUS_API.successResponseCode,
+    description: UPDATE_SCHEMA_STATUS_API.successResponseMessage,
     type: SchemaDetailsResponseEntity,
   })
   async updateSchemaStatus(@Body() body: UpdateCredentialStatusRequestDto) {
@@ -119,12 +133,12 @@ export class RegistryController {
    */
   @Put(ApiRoutes.CREDENTIAL_SCHEMA)
   @ApiOperation({
-    summary: 'Update Credential Schema',
-    description: 'Returns the Updated Schema details with the updated fields.',
+    summary: UPDATE_SCHEMA_PROPERTIES_API.summary,
+    description: UPDATE_SCHEMA_PROPERTIES_API.description,
   })
   @ApiResponse({
-    status: 200,
-    description: 'Credential Schema updated successfully.',
+    status: UPDATE_SCHEMA_PROPERTIES_API.successResponseCode,
+    description: UPDATE_SCHEMA_PROPERTIES_API.successResponseMessage,
     type: SchemaDetailsResponseEntity,
   })
   async updateSchemaProperties(@Body() body: UpdateSchemaRequestDto) {
@@ -139,12 +153,12 @@ export class RegistryController {
    */
   @Post(ApiRoutes.CREDENTIAL_TEMPLATE)
   @ApiOperation({
-    summary: 'Create Credential Schema Template',
-    description: 'Create Schema Template to render the document of the VC in pdf, html format.',
+    summary: CREATE_CREDENTIAL_TEMPLATE_API.summary,
+    description: CREATE_CREDENTIAL_TEMPLATE_API.description,
   })
   @ApiResponse({
-    status: 201,
-    description: 'Credential Template created successfully.',
+    status: CREATE_CREDENTIAL_TEMPLATE_API.successResponseCode,
+    description: CREATE_CREDENTIAL_TEMPLATE_API.successResponseMessage,
     type: TemplateDetailsResponseEntity,
   })
   async createCredentialSchemaTemplate(@Body() templateBody: CreateTemplateRequestBodyDto) {
@@ -159,12 +173,12 @@ export class RegistryController {
    */
   @Get(ApiRoutes.CREDENTIAL_TEMPLATE)
   @ApiOperation({
-    summary: 'Get Credential template by template id',
-    description: 'Returns the template details with the entered template id.',
+    summary: GET_CREDENTIAL_TEMPLATE_API.summary,
+    description: GET_CREDENTIAL_TEMPLATE_API.description,
   })
   @ApiResponse({
-    status: 200,
-    description: 'Credential Schema Template details fetched successfully.',
+    status: GET_CREDENTIAL_TEMPLATE_API.successResponseCode,
+    description: GET_CREDENTIAL_TEMPLATE_API.successResponseMessage,
     type: SchemaDetailsResponseEntity,
   })
   async getCredentialTemplateById(@Query('templateId') templateId: string) {
@@ -179,12 +193,12 @@ export class RegistryController {
    */
   @Delete(ApiRoutes.CREDENTIAL_TEMPLATE)
   @ApiOperation({
-    summary: 'Delete Credential template',
-    description: 'Delete the template using the templateId',
+    summary: DELETE_CREDENTIAL_TEMPLATE_API.summary,
+    description: DELETE_CREDENTIAL_TEMPLATE_API.description,
   })
   @ApiResponse({
-    status: 200,
-    description: 'Credential Template deleted successfully.',
+    status: DELETE_CREDENTIAL_TEMPLATE_API.successResponseCode,
+    description: DELETE_CREDENTIAL_TEMPLATE_API.successResponseMessage,
     type: MessageResponseEntity,
   })
   async deleteCredentialTemplate(@Query('templateId') templateId: string) {
@@ -199,12 +213,14 @@ export class RegistryController {
    */
   @Post(ApiRoutes.CREDENTIAL)
   @ApiOperation({
-    summary: 'Issue Credential',
-    description:
-      'Issues a new verifiable credential via Sunbird RC. Takes the Issuer details, credential certificate receiver details, subject details of the Sunbird Credential and generates a new VC and pushes it to the receiver user wallet.',
+    summary: ISSUE_CREDENTIAL_API.summary,
+    description: ISSUE_CREDENTIAL_API.description,
   })
   @ApiBody({ type: IssueCredentialRequestEntityDto })
-  @ApiResponse({ status: 201, description: 'Verifiable credential issued successfully.' })
+  @ApiResponse({
+    status: ISSUE_CREDENTIAL_API.successResponseCode,
+    description: ISSUE_CREDENTIAL_API.successResponseMessage,
+  })
   async issueCredential(@Body() didRequest: IssueCredentialRequestDto) {
     const vcResult = await this.vcCreateService.issueCredential(didRequest)
     return vcResult
@@ -217,11 +233,13 @@ export class RegistryController {
    */
   @Get(`${ApiRoutes.CREDENTIAL}/:vcId/verify`)
   @ApiOperation({
-    summary: 'Verify Credential',
-    description:
-      'Verifies a verifiable credential by its Id/QrCode by communicating with Sunbird RC Layer. The request contains a path for VC Id by which the VC is verified.',
+    summary: VERIFY_CREDENTIAL_API.summary,
+    description: VERIFY_CREDENTIAL_API.description,
   })
-  @ApiResponse({ status: 200, description: 'Verifiable credential verified successfully.' })
+  @ApiResponse({
+    status: VERIFY_CREDENTIAL_API.successResponseCode,
+    description: VERIFY_CREDENTIAL_API.successResponseMessage,
+  })
   async verifyCredential(@Param('vcId') vcId: string) {
     const vcResult = await this.vcCreateService.verifyCredential(vcId)
     return vcResult
@@ -236,12 +254,14 @@ export class RegistryController {
    */
   @Get(`${ApiRoutes.CREDENTIAL}/:vcId`)
   @ApiOperation({
-    summary: 'Get Verifiable Credential Details by VcId',
-    description:
-      'Retrieves details of a verifiable credential by its ID. Returns all the details of the credential in W3C Format(Json Ld) that is generated via Sunbird RC',
+    summary: GET_CREDENTIAL_API.summary,
+    description: GET_CREDENTIAL_API.description,
   })
   @ApiParam({ name: 'vcId', description: 'Verifiable Credential ID' })
-  @ApiResponse({ status: 200, description: 'Verifiable credential details retrieved successfully.' })
+  @ApiResponse({
+    status: GET_CREDENTIAL_API.successResponseCode,
+    description: GET_CREDENTIAL_API.successResponseMessage,
+  })
   async getVcDetailsById(
     @Param('vcId') vcId: string,
     @Headers('accept') outputType: string,
