@@ -14,6 +14,7 @@ import {
   VERIFY_CREDENTIAL_API,
 } from 'src/common/constants/api-documentation'
 import { ApiRoutes } from 'src/common/constants/api-routes'
+import { ApiFileMimetype } from 'src/common/constants/file-mimetype'
 import { CreateSchemaRequestDto } from '../dto/create-schema-request-body.dto'
 import { CreateTemplateRequestBodyDto } from '../dto/create-template-request-body.dto'
 import { CreateUserDIDRequestDto } from '../dto/create-user-did-request.dto'
@@ -269,7 +270,7 @@ export class RegistryController {
     @Res() res,
   ) {
     let vcResult = {}
-    if (outputType == 'application/pdf' || outputType == 'text/html') {
+    if (outputType == ApiFileMimetype.PDF || outputType == ApiFileMimetype.HTML) {
       // Returns pdf/html
       await this.vcReadService.getVcVisualDocument(vcId, outputType, templateId, res)
     } else {
