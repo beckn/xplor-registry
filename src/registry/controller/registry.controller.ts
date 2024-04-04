@@ -63,8 +63,7 @@ export class RegistryController {
     description: GENERATE_USER_DID_API.successResponseMessage,
   })
   async generateUserDid(@Body() didRequest: CreateUserDIDRequestDto) {
-    const generateDid = await this.userDidService.generateUserDid(didRequest)
-    return generateDid
+    return await this.userDidService.generateUserDid(didRequest)
   }
 
   /**
@@ -83,8 +82,7 @@ export class RegistryController {
     type: SchemaDetailsResponseEntity,
   })
   async createCredentialSchema(@Body() body: CreateSchemaRequestDto) {
-    const schemaResult = await this.schemaCreateService.createSchema(body)
-    return schemaResult
+    return await this.schemaCreateService.createSchema(body)
   }
 
   /**
@@ -103,8 +101,7 @@ export class RegistryController {
     type: SchemaDetailsResponseEntity,
   })
   async getCredentialSchemaByIdAndVersion(@Query() queryParams: GetSchemaDetailsRequestDto) {
-    const schemaResult = await this.schemaReadService.getCredentialSchemaByIdAndVersion(queryParams)
-    return schemaResult
+    return await this.schemaReadService.getCredentialSchemaByIdAndVersion(queryParams)
   }
 
   /**
@@ -123,8 +120,7 @@ export class RegistryController {
     type: SchemaDetailsResponseEntity,
   })
   async updateSchemaStatus(@Body() body: UpdateCredentialStatusRequestDto) {
-    const schemaResult = await this.schemaUpdateService.updateSchemaStatus(body)
-    return schemaResult
+    return await this.schemaUpdateService.updateSchemaStatus(body)
   }
 
   /**
@@ -143,8 +139,7 @@ export class RegistryController {
     type: SchemaDetailsResponseEntity,
   })
   async updateSchemaProperties(@Body() body: UpdateSchemaRequestDto) {
-    const schemaResult = await this.schemaUpdateService.updateSchemaProperties(body)
-    return schemaResult
+    return await this.schemaUpdateService.updateSchemaProperties(body)
   }
 
   /**
@@ -163,8 +158,7 @@ export class RegistryController {
     type: TemplateDetailsResponseEntity,
   })
   async createCredentialSchemaTemplate(@Body() templateBody: CreateTemplateRequestBodyDto) {
-    const templateResult = await this.schemaCreateService.createCredentialSchemaTemplate(templateBody)
-    return templateResult
+    return await this.schemaCreateService.createCredentialSchemaTemplate(templateBody)
   }
 
   /**
@@ -183,8 +177,7 @@ export class RegistryController {
     type: SchemaDetailsResponseEntity,
   })
   async getCredentialTemplateById(@Query('templateId') templateId: string) {
-    const schemaResult = await this.schemaReadService.getCredentialTemplateById(templateId)
-    return schemaResult
+    return await this.schemaReadService.getCredentialTemplateById(templateId)
   }
 
   /**
@@ -203,8 +196,7 @@ export class RegistryController {
     type: MessageResponseEntity,
   })
   async deleteCredentialTemplate(@Query('templateId') templateId: string) {
-    const schemaResult = await this.schemaDeleteService.deleteCredentialTemplate(templateId)
-    return schemaResult
+    return await this.schemaDeleteService.deleteCredentialTemplate(templateId)
   }
 
   /**
@@ -223,8 +215,7 @@ export class RegistryController {
     description: ISSUE_CREDENTIAL_API.successResponseMessage,
   })
   async issueCredential(@Body() didRequest: IssueCredentialRequestDto) {
-    const vcResult = await this.vcCreateService.issueCredential(didRequest)
-    return vcResult
+    return await this.vcCreateService.issueCredential(didRequest)
   }
 
   /**
@@ -242,8 +233,7 @@ export class RegistryController {
     description: VERIFY_CREDENTIAL_API.successResponseMessage,
   })
   async verifyCredential(@Param('vcId') vcId: string) {
-    const vcResult = await this.vcCreateService.verifyCredential(vcId)
-    return vcResult
+    return await this.vcCreateService.verifyCredential(vcId)
   }
 
   /**
@@ -273,7 +263,7 @@ export class RegistryController {
       // Returns pdf/html
       await this.vcReadService.getVcVisualDocument(vcId, outputType, templateId, res)
     } else {
-      res.send(await this.vcReadService.getVcDetailsById(vcId))
+      await this.vcReadService.getVcDetailsById(vcId, res)
     }
   }
 }

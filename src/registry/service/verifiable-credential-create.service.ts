@@ -1,7 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { AxiosRequestConfig } from 'axios'
-import * as fs from 'fs'
 import { ApiClient } from 'src/common/api-client'
 import { RegistryErrors } from 'src/common/constants/error-messages'
 import { ApiFileMimetype } from 'src/common/constants/file-mimetype'
@@ -47,21 +46,6 @@ export class VerifiableCredentialCreateService {
 
     const vcId = vcResult['credential']['id']
     if (vcId !== null) {
-      // Create a file for the receiver and push it in the receiver's wallet
-      const documentPath = await this.vcReadService.getVcVisualDocumentAsPath(
-        vcId,
-        ApiFileMimetype.PDF,
-        issueRequest.credential.templateId,
-      )
-      const savedFileContent = fs.readFileSync(documentPath)
-      const file = {
-        fieldname: 'file',
-        filename: `${vcId}.pdf`,
-        encoding: 'binary',
-        mimetype: ApiFileMimetype.PDF,
-        buffer: savedFileContent,
-        path: documentPath,
-      }
       // TODO: Make an Api Call to upload the file to Receiver's waller
     }
 

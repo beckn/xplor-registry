@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { ConfigService } from '@nestjs/config'
 import { AxiosRequestConfig } from 'axios'
 import * as fs from 'fs'
+import { promises as fsPromises } from 'fs'
 import * as path from 'path'
 import { ApiClient } from 'src/common/api-client'
 import { RegistryErrors } from 'src/common/constants/error-messages'
@@ -32,7 +33,7 @@ export class VerifiableCredentialReadService {
 
     const fileDirectory = this.configService.get(FileUploadLocal.pathConfigName)
     const filePath = path.join(__dirname, '..', fileDirectory)
-
+    console.log('filePath', filePath)
     // Ensure directory existence
     if (!fs.existsSync(filePath)) {
       fs.mkdirSync(filePath, { recursive: true }) // Create directory recursively
@@ -44,7 +45,7 @@ export class VerifiableCredentialReadService {
     const fullPath = path.join(filePath, fileName)
 
     // Write PDF data to the file
-    fs.writeFileSync(fullPath, visualResult, { encoding: 'binary' })
+    await fsPromises.writeFile(fullPath, visualResult, { encoding: 'binary' })
     return fullPath
   }
 
@@ -101,7 +102,7 @@ export class VerifiableCredentialReadService {
   /**
    * Returns VC details by Vc Id
    */
-  async getVcDetailsById(vcId: string): Promise<any> {
+  async getVcDetailsById(vcId: string, res): Promise<any> {
     const headers = {
       Accept: ApiFileMimetype.JSON,
     }
@@ -117,6 +118,6 @@ export class VerifiableCredentialReadService {
       throw new NotFoundException(RegistryErrors.CREDENTIAL_NOT_FOUND)
     }
 
-    return vcDetails
+    res.status(200).send(vcDetails)
   }
 }
