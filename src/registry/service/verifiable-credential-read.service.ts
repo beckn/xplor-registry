@@ -1,7 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { AxiosRequestConfig } from 'axios'
-import * as fs from 'fs'
 import { promises as fsPromises } from 'fs'
 import * as path from 'path'
 import { ApiClient } from 'src/common/api-client'
@@ -33,10 +32,9 @@ export class VerifiableCredentialReadService {
 
     const fileDirectory = this.configService.get(FileUploadLocal.pathConfigName)
     const filePath = path.join(__dirname, '..', fileDirectory)
-    console.log('filePath', filePath)
     // Ensure directory existence
-    if (!fs.existsSync(filePath)) {
-      fs.mkdirSync(filePath, { recursive: true }) // Create directory recursively
+    if (!fsPromises.access(filePath)) {
+      await fsPromises.mkdir(filePath, { recursive: true }) // Create directory recursively
     }
 
     // Save the file
@@ -71,12 +69,11 @@ export class VerifiableCredentialReadService {
       this.configService.get(RequestRoutes.SUNBIRD_VC_SERVICE_URL) + `${RequestRoutes.CREDENTIAL}/${vcId}`,
       config,
     )
-    console.log(visualResult)
     const fileDirectory = '/file-uploads/'
     const filePath = path.join(__dirname, '..', fileDirectory)
 
-    if (!fs.existsSync(filePath)) {
-      fs.mkdirSync(filePath, { recursive: true })
+    if (!fsPromises.access(filePath)) {
+      await fsPromises.mkdir(filePath, { recursive: true })
     }
 
     // Save the file
@@ -85,14 +82,14 @@ export class VerifiableCredentialReadService {
     const fullPath = path.join(filePath, fileName)
 
     // Write PDF data to the file
-    fs.writeFileSync(fullPath, visualResult, { encoding: 'binary' })
+    await fsPromises.writeFile(fullPath, visualResult, { encoding: 'binary' })
 
-    if (fs.existsSync(fullPath)) {
+    if (await fsPromises.stat(fullPath)) {
       res.set('Content-Type', outputType)
       res.download(fullPath, fileName)
       // Clear the file!
-      setTimeout(function () {
-        fs.unlinkSync(fullPath)
+      setTimeout(async function () {
+        await fsPromises.unlink(fullPath)
       }, 3000)
     } else {
       res.status(404).send(RegistryErrors.CREDENTIAL_NOT_FOUND)
