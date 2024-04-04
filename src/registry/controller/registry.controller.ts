@@ -33,6 +33,7 @@ import { CredentialSchemaUpdateService } from 'src/registry/service/credential-s
 import { UserDidService } from 'src/registry/service/user-did.service'
 import { VerifiableCredentialCreateService } from 'src/registry/service/verifiable-credential-create.service'
 import { VerifiableCredentialReadService } from 'src/registry/service/verifiable-credential-read.service'
+import { CreateCredentialRequestDto } from '../dto/create-credential-request.dto'
 
 @ApiTags('Registry')
 @Controller('registry')
@@ -204,6 +205,25 @@ export class RegistryController {
    * @param didRequest The request body containing data required to issue the credential.
    * @returns The result of issuing the verifiable credential if successful.
    */
+  @Post(ApiRoutes.ISSUE_CREDENTIAL)
+  @ApiOperation({
+    summary: ISSUE_CREDENTIAL_API.summary,
+    description: ISSUE_CREDENTIAL_API.description,
+  })
+  @ApiBody({ type: IssueCredentialRequestEntityDto })
+  @ApiResponse({
+    status: ISSUE_CREDENTIAL_API.successResponseCode,
+    description: ISSUE_CREDENTIAL_API.successResponseMessage,
+  })
+  async issueCredential(@Body() issueRequest: IssueCredentialRequestDto) {
+    return await this.vcCreateService.issueCredential(issueRequest)
+  }
+
+  /**
+   * Creates a new verifiable credential.
+   * @param didRequest The request body containing data required to issue the credential.
+   * @returns The result of issuing the verifiable credential if successful.
+   */
   @Post(ApiRoutes.CREDENTIAL)
   @ApiOperation({
     summary: ISSUE_CREDENTIAL_API.summary,
@@ -214,8 +234,8 @@ export class RegistryController {
     status: ISSUE_CREDENTIAL_API.successResponseCode,
     description: ISSUE_CREDENTIAL_API.successResponseMessage,
   })
-  async issueCredential(@Body() didRequest: IssueCredentialRequestDto) {
-    return await this.vcCreateService.issueCredential(didRequest)
+  async createSelfIssuedCredential(@Body() issueRequest: CreateCredentialRequestDto) {
+    return await this.vcCreateService.createSelfCredential(issueRequest)
   }
 
   /**
