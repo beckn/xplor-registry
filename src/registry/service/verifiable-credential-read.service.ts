@@ -33,9 +33,14 @@ export class VerifiableCredentialReadService {
     const fileDirectory = this.configService.get(FileUploadLocal.pathConfigName)
     const filePath = path.join(__dirname, '..', fileDirectory)
     // Ensure directory existence
-    if (!fsPromises.access(filePath)) {
-      await fsPromises.mkdir(filePath, { recursive: true }) // Create directory recursively
-    }
+    await fsPromises
+      .access(filePath)
+      .then(async (_) => {
+        await fsPromises.mkdir(filePath, { recursive: true }) // Create directory recursively
+      })
+      .catch(async (err) => {
+        await fsPromises.mkdir(filePath, { recursive: true })
+      })
 
     // Save the file
     // The output file format is pdf
@@ -72,9 +77,14 @@ export class VerifiableCredentialReadService {
     const fileDirectory = '/file-uploads/'
     const filePath = path.join(__dirname, '..', fileDirectory)
 
-    if (!fsPromises.access(filePath)) {
-      await fsPromises.mkdir(filePath, { recursive: true })
-    }
+    await fsPromises
+      .access(filePath)
+      .then(async (_) => {
+        await fsPromises.mkdir(filePath, { recursive: true }) // Create directory recursively
+      })
+      .catch(async (err) => {
+        await fsPromises.mkdir(filePath, { recursive: true })
+      })
 
     // Save the file
     // The output file format is pdf
