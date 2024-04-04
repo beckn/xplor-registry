@@ -1,10 +1,10 @@
-version: '3.8'
+version: '3'
 services:
   wallet_backend:
     container_name: Xplor-registry-nest-backend
     build: .
     ports:
-      - ${SERVICE_EXTERNAL_PORT}:3000
+      - 1089:3000
     restart: always
     environment:
       - REGISTRY_SERVICE_URL=${REGISTRY_SERVICE_URL}
