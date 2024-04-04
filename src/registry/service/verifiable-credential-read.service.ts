@@ -99,7 +99,7 @@ export class VerifiableCredentialReadService {
       res.download(fullPath, fileName)
       // Clear the file!
       setTimeout(async function () {
-        await fsPromises.unlink(fullPath)
+        await fsPromises.unlink(fullPath).catch((err) => console.error(err))
       }, 3000)
     } else {
       res.status(404).send(RegistryErrors.CREDENTIAL_NOT_FOUND)
