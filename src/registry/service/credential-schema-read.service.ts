@@ -3,8 +3,7 @@ import { ConfigService } from '@nestjs/config'
 import { ApiClient } from 'src/common/api-client'
 import { RegistryErrors } from 'src/common/constants/error-messages'
 import { RequestRoutes } from 'src/common/constants/request-routes'
-import { StandardMessageResponse } from 'src/common/constants/standard-message-response.dto'
-import { GetSchemaDetailsRequestDto } from '../dto/get-schema-details-request.dto'
+import { GetSchemaDetailsRequestDto } from 'src/registry/dto/get-schema-details-request.dto'
 
 @Injectable()
 export class CredentialSchemaReadService {
@@ -13,14 +12,14 @@ export class CredentialSchemaReadService {
   /**
    * Returns the Schema details with the entered schema id and the version.
    */
-  async getCredentialSchemaByIdAndVersion(query: GetSchemaDetailsRequestDto): Promise<StandardMessageResponse | any> {
+  async getCredentialSchemaByIdAndVersion(query: GetSchemaDetailsRequestDto): Promise<any> {
     const schemaRequest = await this.apiClient.get(
-      this.configService.get('SUNBIRD_SCHEMA_SERVICE_URL') +
+      this.configService.get(RequestRoutes.SUNBIRD_SCHEMA_SERVICE_URL) +
         RequestRoutes.SCHEMA +
         `/${query.schemaId}/${query.schemaVersion}`,
     )
 
-    if (schemaRequest == null) {
+    if (!schemaRequest) {
       throw new NotFoundException(RegistryErrors.SCHEMA_NOT_FOUND)
     }
 
@@ -30,12 +29,12 @@ export class CredentialSchemaReadService {
   /**
    * Returns the Template details with the entered templateId.
    */
-  async getCredentialTemplateById(templateId: string): Promise<StandardMessageResponse | any> {
+  async getCredentialTemplateById(templateId: string): Promise<any> {
     const templateRequest = await this.apiClient.get(
-      this.configService.get('SUNBIRD_SCHEMA_SERVICE_URL') + RequestRoutes.TEMPLATE + `/${templateId}`,
+      this.configService.get(RequestRoutes.SUNBIRD_SCHEMA_SERVICE_URL) + RequestRoutes.TEMPLATE + `/${templateId}`,
     )
 
-    if (templateRequest == null) {
+    if (!templateRequest) {
       throw new NotFoundException(RegistryErrors.TEMPLATE_NOT_FOUND)
     }
 

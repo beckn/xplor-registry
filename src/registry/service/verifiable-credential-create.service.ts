@@ -4,10 +4,10 @@ import { AxiosRequestConfig } from 'axios'
 import * as fs from 'fs'
 import { ApiClient } from 'src/common/api-client'
 import { RegistryErrors } from 'src/common/constants/error-messages'
+import { ApiFileMimetype } from 'src/common/constants/file-mimetype'
 import { RequestRoutes } from 'src/common/constants/request-routes'
-import { StandardMessageResponse } from 'src/common/constants/standard-message-response.dto'
-import { CredentialApiDto, IssueCredentialApiRequestDto } from '../dto/issue-credential-api-body.dto'
-import { IssueCredentialRequestDto } from '../dto/issue-credential-status-request.dto'
+import { CredentialApiDto, IssueCredentialApiRequestDto } from 'src/registry/dto/issue-credential-api-body.dto'
+import { IssueCredentialRequestDto } from 'src/registry/dto/issue-credential-status-request.dto'
 import { VerifiableCredentialReadService } from './verifiable-credential-read.service'
 
 @Injectable()
@@ -21,7 +21,7 @@ export class VerifiableCredentialCreateService {
   /**
    * Issues a VC to the user and pushes to user's wallet
    */
-  async issueCredential(issueRequest: IssueCredentialRequestDto): Promise<StandardMessageResponse | any> {
+  async issueCredential(issueRequest: IssueCredentialRequestDto): Promise<any> {
     const requestBody = await new IssueCredentialApiRequestDto(
       new CredentialApiDto(
         issueRequest.credential.context,
@@ -41,7 +41,7 @@ export class VerifiableCredentialCreateService {
       requestBody,
     )
 
-    if (vcResult == null) {
+    if (!vcResult) {
       throw new BadRequestException(RegistryErrors.BAD_REQUEST_CREDENTIAL)
     }
 
@@ -50,7 +50,7 @@ export class VerifiableCredentialCreateService {
       // Create a file for the receiver and push it in the receiver's wallet
       const documentPath = await this.vcReadService.getVcVisualDocumentAsPath(
         vcId,
-        'application/pdf',
+        ApiFileMimetype.PDF,
         issueRequest.credential.templateId,
       )
       const savedFileContent = fs.readFileSync(documentPath)
@@ -58,11 +58,11 @@ export class VerifiableCredentialCreateService {
         fieldname: 'file',
         filename: `${vcId}.pdf`,
         encoding: 'binary',
-        mimetype: 'application/pdf',
+        mimetype: ApiFileMimetype.PDF,
         buffer: savedFileContent,
         path: documentPath,
       }
-      // Make an Api Call to upload the file to Receiver's waller
+      // TODO: Make an Api Call to upload the file to Receiver's waller
     }
 
     return vcResult
@@ -71,9 +71,9 @@ export class VerifiableCredentialCreateService {
   /**
    * Verifies the credential
    */
-  async verifyCredential(vcId: string): Promise<StandardMessageResponse | any> {
+  async verifyCredential(vcId: string): Promise<any> {
     const headers = {
-      Accept: 'application/json',
+      Accept: ApiFileMimetype.PDF,
     }
 
     const config: AxiosRequestConfig = {
@@ -85,11 +85,11 @@ export class VerifiableCredentialCreateService {
       config,
     )
 
-    if (vcDetails == null) {
+    if (!vcDetails) {
       throw new NotFoundException(RegistryErrors.CREDENTIAL_NOT_FOUND)
     }
 
-    if (vcDetails['status'] == 'ISSUED') {
+    if (vcDetails['status'] === 'ISSUED') {
       return vcDetails
     } else {
       throw new UnauthorizedException(RegistryErrors.INVALID_CREDENTIAL)

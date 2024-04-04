@@ -5,8 +5,8 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { ApiClient } from 'src/common/api-client'
 import { RegistryErrors } from 'src/common/constants/error-messages'
+import { ApiFileMimetype, FileUploadLocal } from 'src/common/constants/file-mimetype'
 import { RequestRoutes } from 'src/common/constants/request-routes'
-import { StandardMessageResponse } from 'src/common/constants/standard-message-response.dto'
 
 @Injectable()
 export class VerifiableCredentialReadService {
@@ -26,11 +26,11 @@ export class VerifiableCredentialReadService {
       headers: headers,
     }
     const visualResult = await this.apiClient.get(
-      this.configService.get('SUNBIRD_VC_SERVICE_URL') + `${RequestRoutes.CREDENTIAL}/${vcId}`,
+      this.configService.get(RequestRoutes.SUNBIRD_VC_SERVICE_URL) + `${RequestRoutes.CREDENTIAL}/${vcId}`,
       config,
     )
 
-    const fileDirectory = '/file-uploads/'
+    const fileDirectory = this.configService.get(FileUploadLocal.pathConfigName)
     const filePath = path.join(__dirname, '..', fileDirectory)
 
     // Ensure directory existence
@@ -52,8 +52,8 @@ export class VerifiableCredentialReadService {
    * Renders the VC visual document as pdf
    */
   async getVcVisualDocument(vcId: string, outputType: string, vcTemplateId: string, res) {
-    if (outputType == null || vcTemplateId == null) {
-      throw new BadRequestException(RegistryErrors.BAD_REQUEST_VC_RENDER)
+    if (!outputType || !vcTemplateId) {
+      throw new BadRequestException(RegistryErrors.BAD_REQUEST_CREDENTIAL)
     }
 
     const headers = {
@@ -67,10 +67,10 @@ export class VerifiableCredentialReadService {
       headers: headers,
     }
     const visualResult = await this.apiClient.get(
-      this.configService.get('SUNBIRD_VC_SERVICE_URL') + `${RequestRoutes.CREDENTIAL}/${vcId}`,
+      this.configService.get(RequestRoutes.SUNBIRD_VC_SERVICE_URL) + `${RequestRoutes.CREDENTIAL}/${vcId}`,
       config,
     )
-
+    console.log(visualResult)
     const fileDirectory = '/file-uploads/'
     const filePath = path.join(__dirname, '..', fileDirectory)
 
@@ -101,19 +101,19 @@ export class VerifiableCredentialReadService {
   /**
    * Returns VC details by Vc Id
    */
-  async getVcDetailsById(vcId: string): Promise<StandardMessageResponse | any> {
+  async getVcDetailsById(vcId: string): Promise<any> {
     const headers = {
-      Accept: 'application/json',
+      Accept: ApiFileMimetype.JSON,
     }
 
     const config: AxiosRequestConfig = {
       headers: headers,
     }
     const vcDetails = await this.apiClient.get(
-      this.configService.get('SUNBIRD_VC_SERVICE_URL') + `${RequestRoutes.CREDENTIAL}/${vcId}`,
+      this.configService.get(RequestRoutes.SUNBIRD_VC_SERVICE_URL) + `${RequestRoutes.CREDENTIAL}/${vcId}`,
       config,
     )
-    if (vcDetails == null) {
+    if (!vcDetails) {
       throw new NotFoundException(RegistryErrors.CREDENTIAL_NOT_FOUND)
     }
 

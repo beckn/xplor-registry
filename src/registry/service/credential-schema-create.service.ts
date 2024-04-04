@@ -3,9 +3,8 @@ import { ConfigService } from '@nestjs/config'
 import { ApiClient } from 'src/common/api-client'
 import { RegistryErrors } from 'src/common/constants/error-messages'
 import { RequestRoutes } from 'src/common/constants/request-routes'
-import { StandardMessageResponse } from 'src/common/constants/standard-message-response.dto'
-import { CreateSchemaRequestDto } from '../dto/create-schema-request-body.dto'
-import { CreateTemplateRequestBodyDto } from '../dto/create-template-request-body.dto'
+import { CreateSchemaRequestDto } from 'src/registry/dto/create-schema-request-body.dto'
+import { CreateTemplateRequestBodyDto } from 'src/registry/dto/create-template-request-body.dto'
 
 @Injectable()
 export class CredentialSchemaCreateService {
@@ -14,12 +13,12 @@ export class CredentialSchemaCreateService {
   /**
    * Create a Schema for the credential for your VCs. This communicates with Sunbird RC layer to generate VC Schema
    */
-  async createSchema(requestBody: CreateSchemaRequestDto): Promise<StandardMessageResponse | any> {
+  async createSchema(requestBody: CreateSchemaRequestDto): Promise<any> {
     const schemaRequest = await this.apiClient.post(
-      this.configService.get('SUNBIRD_SCHEMA_SERVICE_URL') + RequestRoutes.SCHEMA,
+      this.configService.get(RequestRoutes.SUNBIRD_SCHEMA_SERVICE_URL) + RequestRoutes.SCHEMA,
       requestBody,
     )
-    if (schemaRequest == null) {
+    if (!schemaRequest) {
       throw new BadRequestException(RegistryErrors.BAD_REQUEST_CREDENTIAL)
     }
 
@@ -29,15 +28,13 @@ export class CredentialSchemaCreateService {
   /**
    * Create a Schema for the credential for your VCs. This communicates with Sunbird RC layer to generate VC Schema
    */
-  async createCredentialSchemaTemplate(
-    templateBody: CreateTemplateRequestBodyDto,
-  ): Promise<StandardMessageResponse | any> {
+  async createCredentialSchemaTemplate(templateBody: CreateTemplateRequestBodyDto): Promise<any> {
     const schemaRequest = await this.apiClient.post(
-      this.configService.get('SUNBIRD_SCHEMA_SERVICE_URL') + RequestRoutes.TEMPLATE,
+      this.configService.get(RequestRoutes.SUNBIRD_SCHEMA_SERVICE_URL) + RequestRoutes.TEMPLATE,
       templateBody,
     )
 
-    if (schemaRequest == null) {
+    if (!schemaRequest) {
       throw new BadRequestException(RegistryErrors.BAD_REQUEST_TEMPLATE)
     }
 

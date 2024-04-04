@@ -1,4 +1,6 @@
 export const RequestRoutes = {
+  SUNBIRD_SCHEMA_SERVICE_URL: 'SUNBIRD_SCHEMA_SERVICE_URL',
+  SUNBIRD_VC_SERVICE_URL: 'SUNBIRD_VC_SERVICE_URL',
   GENERATE_DID: '/did/generate',
   ISSUE_CREDENTIAL: '/credentials/issue',
   CREDENTIAL: '/credentials',

@@ -3,7 +3,6 @@ import { ConfigService } from '@nestjs/config'
 import { ApiClient } from 'src/common/api-client'
 import { RegistryErrors } from 'src/common/constants/error-messages'
 import { RequestRoutes } from 'src/common/constants/request-routes'
-import { StandardMessageResponse } from 'src/common/constants/standard-message-response.dto'
 
 @Injectable()
 export class CredentialSchemaDeleteService {
@@ -11,12 +10,12 @@ export class CredentialSchemaDeleteService {
   /**
    * Deletes the template using the templateId.
    */
-  async deleteCredentialTemplate(templateId: string): Promise<StandardMessageResponse | any> {
+  async deleteCredentialTemplate(templateId: string): Promise<any> {
     const templateRequest = await this.apiClient.delete(
-      this.configService.get('SUNBIRD_SCHEMA_SERVICE_URL') + RequestRoutes.TEMPLATE + `/${templateId}`,
+      this.configService.get(RequestRoutes.SUNBIRD_SCHEMA_SERVICE_URL) + RequestRoutes.TEMPLATE + `/${templateId}`,
     )
 
-    if (templateRequest == null) {
+    if (!templateRequest) {
       throw new NotFoundException(RegistryErrors.TEMPLATE_NOT_FOUND)
     }
 

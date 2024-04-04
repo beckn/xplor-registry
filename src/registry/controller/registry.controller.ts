@@ -15,24 +15,24 @@ import {
 } from 'src/common/constants/api-documentation'
 import { ApiRoutes } from 'src/common/constants/api-routes'
 import { ApiFileMimetype } from 'src/common/constants/file-mimetype'
-import { CreateSchemaRequestDto } from '../dto/create-schema-request-body.dto'
-import { CreateTemplateRequestBodyDto } from '../dto/create-template-request-body.dto'
-import { CreateUserDIDRequestDto } from '../dto/create-user-did-request.dto'
-import { GetSchemaDetailsRequestDto } from '../dto/get-schema-details-request.dto'
-import { IssueCredentialRequestDto } from '../dto/issue-credential-status-request.dto'
-import { UpdateCredentialStatusRequestDto } from '../dto/update-credential-request.dto'
-import { UpdateSchemaRequestDto } from '../dto/update-schema-request-body.dto'
-import { IssueCredentialRequestEntityDto } from '../entity/issue-credential-request.entity'
-import { MessageResponseEntity } from '../entity/message-response.entity'
-import { SchemaDetailsResponseEntity } from '../entity/schema-details-response.entity'
-import { TemplateDetailsResponseEntity } from '../entity/template-details-response.entity'
-import { CredentialSchemaCreateService } from '../service/credential-schema-create.service'
-import { CredentialSchemaDeleteService } from '../service/credential-schema-delete.service'
-import { CredentialSchemaReadService } from '../service/credential-schema-read.service'
-import { CredentialSchemaUpdateService } from '../service/credential-schema-update.service'
-import { UserDidService } from '../service/user-did.service'
-import { VerifiableCredentialCreateService } from '../service/verifiable-credential-create.service'
-import { VerifiableCredentialReadService } from '../service/verifiable-credential-read.service'
+import { CreateSchemaRequestDto } from 'src/registry/dto/create-schema-request-body.dto'
+import { CreateTemplateRequestBodyDto } from 'src/registry/dto/create-template-request-body.dto'
+import { CreateUserDIDRequestDto } from 'src/registry/dto/create-user-did-request.dto'
+import { GetSchemaDetailsRequestDto } from 'src/registry/dto/get-schema-details-request.dto'
+import { IssueCredentialRequestDto } from 'src/registry/dto/issue-credential-status-request.dto'
+import { UpdateCredentialStatusRequestDto } from 'src/registry/dto/update-credential-request.dto'
+import { UpdateSchemaRequestDto } from 'src/registry/dto/update-schema-request-body.dto'
+import { IssueCredentialRequestEntityDto } from 'src/registry/entity/issue-credential-request.entity'
+import { MessageResponseEntity } from 'src/registry/entity/message-response.entity'
+import { SchemaDetailsResponseEntity } from 'src/registry/entity/schema-details-response.entity'
+import { TemplateDetailsResponseEntity } from 'src/registry/entity/template-details-response.entity'
+import { CredentialSchemaCreateService } from 'src/registry/service/credential-schema-create.service'
+import { CredentialSchemaDeleteService } from 'src/registry/service/credential-schema-delete.service'
+import { CredentialSchemaReadService } from 'src/registry/service/credential-schema-read.service'
+import { CredentialSchemaUpdateService } from 'src/registry/service/credential-schema-update.service'
+import { UserDidService } from 'src/registry/service/user-did.service'
+import { VerifiableCredentialCreateService } from 'src/registry/service/verifiable-credential-create.service'
+import { VerifiableCredentialReadService } from 'src/registry/service/verifiable-credential-read.service'
 
 @ApiTags('Registry')
 @Controller('registry')
@@ -269,13 +269,11 @@ export class RegistryController {
     @Headers('templateId') templateId: string,
     @Res() res,
   ) {
-    let vcResult = {}
-    if (outputType == ApiFileMimetype.PDF || outputType == ApiFileMimetype.HTML) {
+    if (outputType === ApiFileMimetype.PDF || outputType === ApiFileMimetype.HTML) {
       // Returns pdf/html
       await this.vcReadService.getVcVisualDocument(vcId, outputType, templateId, res)
     } else {
-      vcResult = await this.vcReadService.getVcDetailsById(vcId)
-      res.send(vcResult)
+      res.send(await this.vcReadService.getVcDetailsById(vcId))
     }
   }
 }
