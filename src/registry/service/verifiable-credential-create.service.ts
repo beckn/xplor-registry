@@ -61,7 +61,6 @@ export class VerifiableCredentialCreateService {
       this.configService.get('WALLET_SERVICE_URL') + RequestRoutes.PUSH_CREDENTIAL_TO_WALLET,
       pushVCRequestBody,
     )
-    console.log(file)
     return vcResult
   }
 
