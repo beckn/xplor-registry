@@ -2,12 +2,14 @@ import { BadRequestException, Injectable, NotFoundException, UnauthorizedExcepti
 import { ConfigService } from '@nestjs/config'
 import { AxiosRequestConfig } from 'axios'
 import { ApiClient } from 'src/common/api-client'
+import { VcType } from 'src/common/constants/enums'
 import { RegistryErrors } from 'src/common/constants/error-messages'
 import { ApiFileMimetype } from 'src/common/constants/file-mimetype'
 import { RequestRoutes } from 'src/common/constants/request-routes'
 import { CredentialApiDto, IssueCredentialApiRequestDto } from 'src/registry/dto/issue-credential-api-body.dto'
 import { IssueCredentialRequestDto } from 'src/registry/dto/issue-credential-status-request.dto'
 import { CreateCredentialRequestDto } from '../dto/create-credential-request.dto'
+import { PushVCRequestBodyDto } from '../dto/push-vc-request-body.dto'
 import { VerifiableCredentialReadService } from './verifiable-credential-read.service'
 
 @Injectable()
@@ -45,6 +47,21 @@ export class VerifiableCredentialCreateService {
       throw new BadRequestException(RegistryErrors.BAD_REQUEST_CREDENTIAL)
     }
 
+    const pushVCRequestBody = new PushVCRequestBodyDto(
+      vcResult['credential']['id'],
+      issueRequest.credentialReceiver.walletId,
+      VcType.RECEIVED,
+      issueRequest.credential.credentialSubject['type'],
+      issueRequest.credential.templateId,
+      issueRequest.credentialReceiver.tags,
+      issueRequest.credentialReceiver.vcName,
+    )
+    // Push this VC to User's wallet
+    const file = await this.apiClient.post(
+      this.configService.get('WALLET_SERVICE_URL') + RequestRoutes.PUSH_CREDENTIAL_TO_WALLET,
+      pushVCRequestBody,
+    )
+    console.log(file)
     return vcResult
   }
 
