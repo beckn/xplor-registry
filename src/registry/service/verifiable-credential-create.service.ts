@@ -48,7 +48,7 @@ export class VerifiableCredentialCreateService {
     }
 
     const pushVCRequestBody = new PushVCRequestBodyDto(
-      vcResult['credential']['id'],
+      vcResult?.credential?.id,
       issueRequest.credentialReceiver.walletId,
       VcType.RECEIVED,
       issueRequest.credential.credentialSubject['type'],
@@ -57,7 +57,7 @@ export class VerifiableCredentialCreateService {
       issueRequest.credentialReceiver.vcName,
     )
     // Push this VC to User's wallet
-    const file = await this.apiClient.post(
+    await this.apiClient.post(
       this.configService.get('WALLET_SERVICE_URL') + RequestRoutes.PUSH_CREDENTIAL_TO_WALLET,
       pushVCRequestBody,
     )
