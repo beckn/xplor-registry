@@ -4,6 +4,7 @@ export const RequestRoutes = {
   GENERATE_DID: '/did/generate',
   ISSUE_CREDENTIAL: '/credentials/issue',
   CREDENTIAL: '/credentials',
+  PUSH_CREDENTIAL_TO_WALLET: '/vc/push',
   VERIFY_CREDENTIAL: '/verify',
   SCHEMA: '/credential-schema',
   TEMPLATE: '/template',

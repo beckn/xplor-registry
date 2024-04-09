@@ -29,10 +29,6 @@ class CredentialDto {
 
   @IsString()
   @ApiProperty()
-  templateId: string
-
-  @IsString()
-  @ApiProperty()
   schemaId: string
 
   @IsString()
@@ -62,7 +58,6 @@ class CredentialDto {
 
   constructor(
     context: string[],
-    templateId: string,
     schemaId: string,
     schemaVersion: string,
     expirationDate: string,
@@ -72,7 +67,6 @@ class CredentialDto {
     tags: string[],
   ) {
     this.context = context
-    this.templateId = templateId
     this.schemaId = schemaId
     this.schemaVersion = schemaVersion
     this.expirationDate = expirationDate
@@ -83,15 +77,11 @@ class CredentialDto {
   }
 }
 
-export class IssueCredentialRequestDto {
+export class CreateCredentialRequestDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
   issuerId: string
-
-  @ValidateNested()
-  @ApiProperty()
-  credentialReceiver: CredentialReceiverDto
 
   @ValidateNested()
   @ApiProperty()

@@ -33,7 +33,7 @@ export class VerifiableCredentialReadService {
     const fileDirectory = this.configService.get(FileUploadLocal.pathConfigName)
     const filePath = path.join(__dirname, '..', fileDirectory)
     // Ensure directory existence
-    if (!fsPromises.access(filePath)) {
+    if (!(await fsPromises.stat(filePath))) {
       await fsPromises.mkdir(filePath, { recursive: true }) // Create directory recursively
     }
 
@@ -72,8 +72,8 @@ export class VerifiableCredentialReadService {
     const fileDirectory = '/file-uploads/'
     const filePath = path.join(__dirname, '..', fileDirectory)
 
-    if (!fsPromises.access(filePath)) {
-      await fsPromises.mkdir(filePath, { recursive: true })
+    if (!(await fsPromises.stat(filePath))) {
+      await fsPromises.mkdir(filePath, { recursive: true }) // Create directory recursively
     }
 
     // Save the file
@@ -89,7 +89,7 @@ export class VerifiableCredentialReadService {
       res.download(fullPath, fileName)
       // Clear the file!
       setTimeout(async function () {
-        await fsPromises.unlink(fullPath)
+        await fsPromises.unlink(fullPath).catch((err) => console.error(err))
       }, 3000)
     } else {
       res.status(404).send(RegistryErrors.CREDENTIAL_NOT_FOUND)

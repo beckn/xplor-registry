@@ -19,7 +19,7 @@ export class CredentialSchemaCreateService {
       requestBody,
     )
     if (!schemaRequest) {
-      throw new BadRequestException(RegistryErrors.BAD_REQUEST_CREDENTIAL)
+      throw new BadRequestException(RegistryErrors.SCHEMA_CREATE_ERROR)
     }
 
     return schemaRequest
