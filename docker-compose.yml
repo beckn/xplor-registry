@@ -1,6 +1,6 @@
 version: '3'
 services:
-  wallet_backend:
+  xplor_registry_backend_service:
     container_name: Xplor-registry-nest-backend
     build: .
     ports:
