@@ -1,73 +1,112 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Xplor - Registry Service
+This service is responsible for creating, storing, deleting the Verifiable Credentials using Sunbird RC layer. The registry service interacts with Sunbird RC as to do VC related operations.
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Table of Contents
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+- [Working Demo](#working-demo)
+- [Pre-requisites](#pre-requisites)
+- [Installation](#installation)
+- [Running tests](#running-tests)
+- [Service Modules](#service-modules)
+- [Configurations](#configurations)
+- [Deployment](#deployment)
+- [Contributing](#contributing)
 
-## Description
+## API Documentation
+To view the Swagger API Docs for the service, you can start the service and hit
+```{BASE_URL}/api/v1/```. This will open the proper API Documentation of this service.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Pre-requisites
+Below is the list of services you need in order to run this service.
+- [Sunbird RC Layer](https://github.com.com/xplor-sunbird) to manage data.
+- [Xplor Wallet Layer](https://github.com/xplor-wallet) to push VC to wallet.
+
 
 ## Installation
 
-```bash
-$ npm install
-```
-
-## Running the app
+### Clone or fork this Project
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+ git clone REPOSITORY_LINK
 ```
-
-## Test
+    
+### Setup Environment Variables(.env)
+You need to setup the values for the environment variables. Below is the list of required .env variables
 
 ```bash
-# unit tests
-$ npm run test
+REGISTRY_SERVICE_URL=
+SUNBIRD_IDENTITY_SERVICE_URL=
+SUNBIRD_VC_SERVICE_URL=
+SUNBIRD_SCHEMA_SERVICE_URL=
+FILE_STORE_LOCAL_PATH=
+WALLET_SERVICE_URL=
+```
+### Run service using Docker
+Make sure you've the latest version of the docker installed in-order to run the application. Run the service with the following command
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+```bash
+ docker compose --build
 ```
 
-## Support
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+    
+## Running Tests
 
-## Stay in touch
+The service has test cases for each module's service functions which you will get triggered on pushing the code to remote. You can run the test with the following command as well:
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```bash
+  npm test
+```
+
+
+## Service Modules
+This service follows Nest Js framework and the code structure for it. Each feature is divided into a separate module, then each module communicates with one another, seamlessly. The services inside Module is divided into CRUD Services - Create Service, Read Service, Update Service, Delete Service, keeping the code shorter and reusable.
+
+### Main
+The main module is the heart of the Nest js service and includes the dependencies and configs of the whole service.
+
+### Registry
+The registry module is responsible for managing CRUD operations of a VC by communicating with Sunbird RC using HTTP Requests.
+``` 
+src/registry 
+```
+
+## Configuration
+
+System setup revolves around environment variables for ease of configuration. Key points include database settings, authentication parameters, and logging specifics. The `.env.example` file lists all necessary variables.
+
+```bash
+REGISTRY_SERVICE_URL=
+SUNBIRD_IDENTITY_SERVICE_URL=
+SUNBIRD_VC_SERVICE_URL=
+SUNBIRD_SCHEMA_SERVICE_URL=
+FILE_STORE_LOCAL_PATH=
+WALLET_SERVICE_URL=
+```
+
+## Deployment
+
+Deploying the Registry service can be achieved through:
+
+- **Docker**: Create a Docker image and launch your service.
+- **Kubernetes**: Use Kubernetes for scalable container management.
+- **CI/CD**: Automate deployment with CI/CD tools like Jenkins, GitLab CI, or GitHub Actions.
+
+## Contributing
+
+Contributions are welcomed! Please follow these steps to contribute:
+
+#### 1. Fork the project.
+#### 2. Create your feature branch (`git checkout -b feature/AmazingFeature`).
+#### 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`).
+#### 4. Push to the branch (`git push origin feature/AmazingFeature`).
+#### 5. Open a pull request.
 
 ## License
 
-Nest is [MIT licensed](LICENSE).
+Distributed under the MIT License. See [LICENSE.md](LICENSE.md) for more information.
+
+## Acknowledgments
+
+- Kudos to all contributors and the NestJS community.
+- Appreciation for anyone dedicating time to enhance open-source software.
