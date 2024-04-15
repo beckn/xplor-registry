@@ -11,7 +11,15 @@ import { IssueCredentialRequestDto } from 'src/registry/dto/issue-credential-sta
 import { CreateCredentialRequestDto } from '../dto/create-credential-request.dto'
 import { PushVCRequestBodyDto } from '../dto/push-vc-request-body.dto'
 import { VerifiableCredentialReadService } from './verifiable-credential-read.service'
-
+import { SELF_ISSUED_VC_CONTEXT } from '../../config/vc-schema.config'
+import {
+  WALLET_SERVICE_URL,
+  SELF_ISSUED_SCHEMA_ID,
+  SELF_ISSUED_SCHEMA_VERSION,
+  SELF_ISSUED_ORGANIZATION_NAME,
+  SELF_ISSUED_SCHEMA_TAG,
+} from '../../common/constants/name-constants'
+import { generateVCExpirationDate, generateCurrentIsoTime } from '../../utils/file.utils'
 @Injectable()
 export class VerifiableCredentialCreateService {
   constructor(
@@ -58,7 +66,7 @@ export class VerifiableCredentialCreateService {
     )
     // Push this VC to User's wallet
     await this.apiClient.post(
-      this.configService.get('WALLET_SERVICE_URL') + RequestRoutes.PUSH_CREDENTIAL_TO_WALLET,
+      this.configService.get(WALLET_SERVICE_URL) + RequestRoutes.PUSH_CREDENTIAL_TO_WALLET,
       pushVCRequestBody,
     )
     return vcResult
@@ -70,23 +78,26 @@ export class VerifiableCredentialCreateService {
   async createSelfCredential(issueRequest: CreateCredentialRequestDto): Promise<any> {
     const requestBody = await new IssueCredentialApiRequestDto(
       new CredentialApiDto(
-        issueRequest.credential.context,
-        issueRequest.credential.type,
+        SELF_ISSUED_VC_CONTEXT,
+        ['VerifiableCredential', this.configService.get(SELF_ISSUED_SCHEMA_TAG)],
         issueRequest.issuerId,
-        new Date().toISOString(),
-        issueRequest.credential.expirationDate,
-        issueRequest.credential.credentialSubject,
+        generateCurrentIsoTime(),
+        generateVCExpirationDate(100),
+        {
+          id: `did:${this.configService.get(SELF_ISSUED_ORGANIZATION_NAME)}`,
+          type: this.configService.get(SELF_ISSUED_SCHEMA_TAG),
+          certificateLink: issueRequest.credential.certificateLink,
+        },
       ),
-      issueRequest.credential.schemaId,
-      issueRequest.credential.schemaVersion,
+      this.configService.get(SELF_ISSUED_SCHEMA_ID),
+      this.configService.get(SELF_ISSUED_SCHEMA_VERSION),
       issueRequest.credential.tags,
-      issueRequest.credential.organization,
+      this.configService.get(SELF_ISSUED_ORGANIZATION_NAME),
     )
     const vcResult = await this.apiClient.post(
       this.configService.get('SUNBIRD_VC_SERVICE_URL') + RequestRoutes.ISSUE_CREDENTIAL,
       requestBody,
     )
-
     if (!vcResult) {
       throw new BadRequestException(RegistryErrors.BAD_REQUEST_CREDENTIAL)
     }

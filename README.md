@@ -12,9 +12,6 @@ This service is responsible for creating, storing, deleting the Verifiable Crede
 - [Deployment](#deployment)
 - [Contributing](#contributing)
 
-## API Documentation
-To view the Swagger API Docs for the service, you can start the service and hit
-```{BASE_URL}/api/v1/```. This will open the proper API Documentation of this service.
 
 ## Pre-requisites
 Below is the list of services you need in order to run this service.
@@ -57,6 +54,10 @@ The service has test cases for each module's service functions which you will ge
 ```bash
   npm test
 ```
+
+## API Documentation
+To view the Swagger API Docs for the service, you can start the service and hit
+```/api/v1/```. This will open the proper API Documentation of this service.
 
 
 ## Service Modules

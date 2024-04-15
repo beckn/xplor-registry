@@ -1,9 +1,15 @@
+/*
+Written by Bhaskar Kauraa
+Date: 15 April, 2024
+*/
+
 import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { AppModule } from './app.module'
-
+import { ValidationPipe } from '@nestjs/common'
 async function run() {
   const app = await NestFactory.create(AppModule, { cors: true })
+  app.useGlobalPipes(new ValidationPipe())
   app.setGlobalPrefix('api/v1')
   const config = new DocumentBuilder()
     .setTitle('Xplor Registry')
@@ -13,7 +19,7 @@ async function run() {
     .build()
   const document = SwaggerModule.createDocument(app, config)
   SwaggerModule.setup('api/v1', app, document)
-  await app.listen(3000)
+  await app.listen(3001)
 }
 
 run()
