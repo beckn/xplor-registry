@@ -13,7 +13,7 @@ import {
   SELF_ISSUED_SCHEMA_ID,
   SELF_ISSUED_SCHEMA_TAG,
   SELF_ISSUED_SCHEMA_VERSION,
-  WALLET_SERVICE_URL,
+  WALLET_SERVICE_URL
 } from '../../common/constants/name-constants'
 import { SELF_ISSUED_VC_CONTEXT } from '../../config/vc-schema.config'
 import { generateCurrentIsoTime, generateVCExpirationDate } from '../../utils/file.utils'
@@ -47,7 +47,7 @@ export class VerifiableCredentialCreateService {
       issueRequest.credential.organization,
     )
     const vcResult = await this.apiClient.post(
-      this.configService.get('SUNBIRD_VC_SERVICE_URL') + RequestRoutes.ISSUE_CREDENTIAL,
+      this.configService.get(RequestRoutes.SUNBIRD_VC_SERVICE_URL) + RequestRoutes.ISSUE_CREDENTIAL,
       requestBody,
     )
 
@@ -96,7 +96,7 @@ export class VerifiableCredentialCreateService {
       this.configService.get(SELF_ISSUED_ORGANIZATION_NAME),
     )
     const vcResult = await this.apiClient.post(
-      this.configService.get('SUNBIRD_VC_SERVICE_URL') + RequestRoutes.ISSUE_CREDENTIAL,
+      this.configService.get(RequestRoutes.SUNBIRD_VC_SERVICE_URL) + RequestRoutes.ISSUE_CREDENTIAL,
       requestBody,
     )
     if (!vcResult) {
@@ -117,7 +117,7 @@ export class VerifiableCredentialCreateService {
       headers: headers,
     }
     const vcDetails = await this.apiClient.get(
-      this.configService.get('SUNBIRD_VC_SERVICE_URL') +
+      this.configService.get(RequestRoutes.SUNBIRD_VC_SERVICE_URL) +
         `${RequestRoutes.CREDENTIAL}/${vcId}${RequestRoutes.VERIFY_CREDENTIAL}`,
       config,
     )

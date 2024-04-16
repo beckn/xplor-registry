@@ -3,22 +3,23 @@ Written by Bhaskar Kauraa
 Date: 15 April, 2024
 */
 
+import { ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { AppModule } from './app.module'
-import { ValidationPipe } from '@nestjs/common'
+import { SwaggerDocs } from './common/constants/api-documentation'
 async function run() {
   const app = await NestFactory.create(AppModule, { cors: true })
   app.useGlobalPipes(new ValidationPipe())
-  app.setGlobalPrefix('api/v1')
+  app.setGlobalPrefix(SwaggerDocs.route)
   const config = new DocumentBuilder()
-    .setTitle('Xplor Registry')
-    .setDescription('Registry layer for Xplore to issue, fetch and verify Credentials using Sunbird RC Layer.')
-    .setVersion('0.0.1-alpha')
-    .addTag('Registry')
+    .setTitle(SwaggerDocs.title)
+    .setDescription(SwaggerDocs.description)
+    .setVersion(SwaggerDocs.version)
+    .addTag(SwaggerDocs.tag)
     .build()
   const document = SwaggerModule.createDocument(app, config)
-  SwaggerModule.setup('api/v1', app, document)
+  SwaggerModule.setup(SwaggerDocs.route, app, document)
   await app.listen(3000)
 }
 
