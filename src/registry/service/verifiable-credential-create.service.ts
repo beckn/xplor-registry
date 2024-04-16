@@ -60,6 +60,7 @@ export class VerifiableCredentialCreateService {
       issueRequest.credentialReceiver.walletId,
       VcType.RECEIVED,
       issueRequest.credential.credentialSubject['type'],
+      issueRequest.credential.credentialIconUrl,
       issueRequest.credential.templateId,
       issueRequest.credentialReceiver.tags,
       issueRequest.credentialReceiver.vcName,

@@ -31,6 +31,10 @@ export class PushVCRequestBodyDto {
   @ApiProperty()
   tags: string[]
 
+  @ApiProperty()
+  @IsString()
+  vcIconUrl?: string
+
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
@@ -41,6 +45,7 @@ export class PushVCRequestBodyDto {
     walletId: string,
     type: VcType,
     category: string,
+    vcIconUrl: string,
     templateId: string,
     tags: string[],
     name: string,
@@ -49,6 +54,7 @@ export class PushVCRequestBodyDto {
     this.walletId = walletId
     this.type = type
     this.category = category
+    this.vcIconUrl = vcIconUrl
     this.templateId = templateId
     this.tags = tags
     this.name = name
