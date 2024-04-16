@@ -8,18 +8,18 @@ import { ApiFileMimetype } from 'src/common/constants/file-mimetype'
 import { RequestRoutes } from 'src/common/constants/request-routes'
 import { CredentialApiDto, IssueCredentialApiRequestDto } from 'src/registry/dto/issue-credential-api-body.dto'
 import { IssueCredentialRequestDto } from 'src/registry/dto/issue-credential-status-request.dto'
+import {
+  SELF_ISSUED_ORGANIZATION_NAME,
+  SELF_ISSUED_SCHEMA_ID,
+  SELF_ISSUED_SCHEMA_TAG,
+  SELF_ISSUED_SCHEMA_VERSION,
+  WALLET_SERVICE_URL,
+} from '../../common/constants/name-constants'
+import { SELF_ISSUED_VC_CONTEXT } from '../../config/vc-schema.config'
+import { generateCurrentIsoTime, generateVCExpirationDate } from '../../utils/file.utils'
 import { CreateCredentialRequestDto } from '../dto/create-credential-request.dto'
 import { PushVCRequestBodyDto } from '../dto/push-vc-request-body.dto'
 import { VerifiableCredentialReadService } from './verifiable-credential-read.service'
-import { SELF_ISSUED_VC_CONTEXT } from '../../config/vc-schema.config'
-import {
-  WALLET_SERVICE_URL,
-  SELF_ISSUED_SCHEMA_ID,
-  SELF_ISSUED_SCHEMA_VERSION,
-  SELF_ISSUED_ORGANIZATION_NAME,
-  SELF_ISSUED_SCHEMA_TAG,
-} from '../../common/constants/name-constants'
-import { generateVCExpirationDate, generateCurrentIsoTime } from '../../utils/file.utils'
 @Injectable()
 export class VerifiableCredentialCreateService {
   constructor(
