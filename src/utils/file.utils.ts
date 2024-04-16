@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid'
-
+import { addYears, formatISO } from 'date-fns'
 export function matchFilters(metadata: any, filters: any): boolean {
   for (const key in filters) {
     if (typeof filters[key] === 'object') {
@@ -27,4 +27,17 @@ export function getFutureTimeStamp(hoursFromNow: number): number {
 
 export function generateUrlUUID(): string {
   return uuidv4()
+}
+
+export function generateCurrentIsoTime(): string {
+  const currentDate = new Date()
+  const futureDate = new Date(currentDate.getTime() + 1 * 60 * 60 * 1000)
+  return futureDate.toISOString()
+}
+
+export function generateVCExpirationDate(years: number) {
+  const currentDate = new Date()
+  const futureDate = addYears(currentDate, years)
+  const formattedFutureDate = formatISO(futureDate)
+  return formattedFutureDate
 }

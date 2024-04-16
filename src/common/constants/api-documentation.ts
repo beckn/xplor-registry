@@ -1,3 +1,11 @@
+export const SwaggerDocs = {
+  title: 'Xplor Registry',
+  description: 'Registry layer for Xplore to issue, fetch and verify Credentials using Sunbird RC Layer.',
+  version: '0.0.1-alpha',
+  tag: 'Registry',
+  route: 'api/v1',
+}
+
 export const GENERATE_USER_DID_API = {
   summary: 'Generate User DID',
   description:
