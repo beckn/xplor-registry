@@ -1,5 +1,5 @@
 /*
-Written by Bhaskar Kauraa
+Written by Bhaskar Kaura
 Date: 15 April, 2024
 */
 
