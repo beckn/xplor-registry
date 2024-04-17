@@ -3,14 +3,24 @@ Written by Bhaskar Kauraa
 Date: 15 April, 2024
 */
 
-import { ValidationPipe } from '@nestjs/common'
+import { BadRequestException, ValidationError, ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { AppModule } from './app.module'
 import { SwaggerDocs } from './common/constants/api-documentation'
 async function run() {
   const app = await NestFactory.create(AppModule, { cors: true })
-  app.useGlobalPipes(new ValidationPipe())
+  app.useGlobalPipes(
+    new ValidationPipe({
+      exceptionFactory: (validationErrors: ValidationError[] = []) => {
+        return new BadRequestException({
+          message: Object.values(validationErrors[0].constraints).join(', '),
+          error: 'Bad Request',
+          statusCode: 400,
+        })
+      },
+    }),
+  )
   app.setGlobalPrefix(SwaggerDocs.route)
   const config = new DocumentBuilder()
     .setTitle(SwaggerDocs.title)
