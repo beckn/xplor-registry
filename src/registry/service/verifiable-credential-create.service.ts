@@ -13,7 +13,7 @@ import {
   SELF_ISSUED_SCHEMA_ID,
   SELF_ISSUED_SCHEMA_TAG,
   SELF_ISSUED_SCHEMA_VERSION,
-  WALLET_SERVICE_URL
+  WALLET_SERVICE_URL,
 } from '../../common/constants/name-constants'
 import { SELF_ISSUED_VC_CONTEXT } from '../../config/vc-schema.config'
 import { generateCurrentIsoTime, generateVCExpirationDate } from '../../utils/file.utils'

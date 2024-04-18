@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { ApiClient } from 'src/common/api-client'
+import { SELF_ISSUED_ORGANIZATION_NAME } from 'src/common/constants/name-constants'
 import { RequestRoutes } from 'src/common/constants/request-routes'
 import { CreateUserDidApiBodyDto } from 'src/registry/dto/create-user-did-api-body.dto'
 import { CreateUserDIDRequestDto } from 'src/registry/dto/create-user-did-request.dto'
@@ -16,7 +17,7 @@ export class UserDidService {
     const requestBody = new CreateUserDidApiBodyDto([
       {
         alsoKnownAs: [didRequest.didDetails.fullName, didRequest.didDetails.email],
-        method: didRequest.organization.toString().trim(),
+        method: this.configService.get(SELF_ISSUED_ORGANIZATION_NAME),
       },
     ])
     const createUser = await this.apiClient.post(

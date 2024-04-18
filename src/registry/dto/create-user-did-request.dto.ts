@@ -17,9 +17,4 @@ export class CreateUserDIDRequestDto {
   @ValidateNested()
   @ApiProperty()
   didDetails: DIDDetails
-
-  @IsNotEmpty()
-  @IsString()
-  @ApiProperty()
-  organization: string
 }
