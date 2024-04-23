@@ -15,7 +15,7 @@ export class CreateTemplateRequestBodyDto {
   @IsString()
   @ApiProperty({ example: '<html><h1>{{certificateLink}}</h1></html>' })
   @IsNotEmpty()
-  templateHtml: string
+  template: string
 
   @IsString()
   @IsNotEmpty()
