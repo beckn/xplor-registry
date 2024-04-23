@@ -1,13 +1,13 @@
 import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { AxiosRequestConfig } from 'axios'
-import { ApiClient } from 'src/common/api-client'
-import { VcType } from 'src/common/constants/enums'
-import { RegistryErrors } from 'src/common/constants/error-messages'
-import { ApiFileMimetype } from 'src/common/constants/file-mimetype'
-import { RequestRoutes } from 'src/common/constants/request-routes'
-import { CredentialApiDto, IssueCredentialApiRequestDto } from 'src/registry/dto/issue-credential-api-body.dto'
-import { IssueCredentialRequestDto } from 'src/registry/dto/issue-credential-status-request.dto'
+import { ApiClient } from '../../common/api-client'
+import { VcType } from '../../common/constants/enums'
+import { RegistryErrors } from '../../common/constants/error-messages'
+import { ApiFileMimetype } from '../../common/constants/file-mimetype'
+import { RequestRoutes } from '../../common/constants/request-routes'
+import { CredentialApiDto, IssueCredentialApiRequestDto } from '../../registry/dto/issue-credential-api-body.dto'
+import { IssueCredentialRequestDto } from '../../registry/dto/issue-credential-status-request.dto'
 import {
   SELF_ISSUED_ORGANIZATION_NAME,
   SELF_ISSUED_SCHEMA_ID,
@@ -20,6 +20,7 @@ import { generateCurrentIsoTime, generateVCExpirationDate } from '../../utils/fi
 import { CreateCredentialRequestDto } from '../dto/create-credential-request.dto'
 import { PushVCRequestBodyDto } from '../dto/push-vc-request-body.dto'
 import { VerifiableCredentialReadService } from './verifiable-credential-read.service'
+import { RegistryMessages } from '../../common/constants/message.constants'
 @Injectable()
 export class VerifiableCredentialCreateService {
   constructor(
@@ -127,7 +128,7 @@ export class VerifiableCredentialCreateService {
     }
 
     if (vcDetails['status'] === 'ISSUED') {
-      return { success: true, message: 'This Verifiable Credential is issued & valid.' }
+      return { success: true, message: RegistryMessages.VERIFY_SUCCESS_MESSAGE }
     } else {
       throw new UnauthorizedException(RegistryErrors.INVALID_CREDENTIAL)
     }
