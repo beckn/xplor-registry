@@ -127,7 +127,7 @@ export class VerifiableCredentialCreateService {
     }
 
     if (vcDetails['status'] === 'ISSUED') {
-      return vcDetails
+      return { success: true, message: 'This Verifiable Credential is issued & valid.' }
     } else {
       throw new UnauthorizedException(RegistryErrors.INVALID_CREDENTIAL)
     }
