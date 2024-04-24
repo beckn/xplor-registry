@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common'
 import { ApiClient } from 'src/common/api-client'
+import { GrafanaLoggerService } from 'src/grafana/service/grafana.service'
 import { RegistryController } from 'src/registry/controller/registry.controller'
 import { CredentialSchemaCreateService } from 'src/registry/service/credential-schema-create.service'
 import { CredentialSchemaDeleteService } from 'src/registry/service/credential-schema-delete.service'
@@ -13,6 +14,7 @@ import { VerifiableCredentialReadService } from 'src/registry/service/verifiable
   imports: [ApiClient],
   controllers: [RegistryController],
   providers: [
+    GrafanaLoggerService,
     VerifiableCredentialCreateService,
     VerifiableCredentialReadService,
     UserDidService,

@@ -39,6 +39,7 @@ SUNBIRD_VC_SERVICE_URL=
 SUNBIRD_SCHEMA_SERVICE_URL=
 FILE_STORE_LOCAL_PATH=
 WALLET_SERVICE_URL=
+GRAFANA_SERVICE_URL=
 ```
 ### Run service using Docker
 Make sure you've the latest version of the docker installed in-order to run the application. Run the service with the following command
@@ -435,6 +436,7 @@ SUNBIRD_VC_SERVICE_URL=
 SUNBIRD_SCHEMA_SERVICE_URL=
 FILE_STORE_LOCAL_PATH=
 WALLET_SERVICE_URL=
+GRAFANA_SERVICE_URL=
 ```
 
 ## Deployment

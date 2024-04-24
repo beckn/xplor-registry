@@ -6,6 +6,9 @@ import { AppService } from './app.service'
 import { ApiClient } from './common/api-client'
 import configuration from './config/env/env.config'
 import { VerifiableCredentialModule } from './registry/module/verifiable-credential.module'
+import { APP_INTERCEPTOR } from '@nestjs/core'
+import { GrafanaLoggerService } from './grafana/service/grafana.service'
+import { LoggingInterceptor } from './utils/logger-interceptor'
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -16,6 +19,13 @@ import { VerifiableCredentialModule } from './registry/module/verifiable-credent
     VerifiableCredentialModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    GrafanaLoggerService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LoggingInterceptor,
+    },
+  ],
 })
 export class AppModule {}
