@@ -80,7 +80,7 @@ Request body:
 | `didDetails`| `object` | Details of the DID issuer. Contains: <br>- `fullName`: Full name of the issuer. <br>- `email`: Email of the issuer. |
 | `organization`| `string`| Name of the organization.    |
 
-Response body: 
+Response body:
 ```
 [
     {
@@ -111,7 +111,7 @@ Response body:
 ]
 ```
 
-The output will return an id key for the vc along with some other details, but we'll take only id in focus.
+The output will return an i key for the User which is the Did along with some other details, but we'll take only id in focus.
 
 ### 2. Define a schema for VC
 Now that we've got user did, it's time to make a schema for the VC. This schema will have all the properties for the VC. Below is a W3C Standard schema for a Skill certificate.
@@ -174,7 +174,7 @@ Response body:
         "schema": {
             "$id": "Skill-Credential-1.0",
             "$schema": "https://json-schema.org/draft/2019-09/schema",
-            "description": "This certificate is skill certificate that reflects that the indiviual has learned this skill.",
+            "description": "This certificate is skill certificate that reflects that the individual has learned this skill.",
             "type": "object",
             "properties": {
                 "studentName": {
@@ -287,8 +287,8 @@ Request body:
                             "type": "@type",
                             "studentName": "schema:text",
 							"courseName": "schema:text",
-              							"instituteName": "schema:text",
-                            	"issuedDate": "schema:text"
+              				"instituteName": "schema:text",
+                            "issuedDate": "schema:text"
                         }
                     }
                 }
@@ -362,10 +362,10 @@ Response body:
 }
 ```
 
-The Certificate is successfully generated. We've got a id key for the certificate in the response body.
+The Certificate is successfully generated. We've got a id key for the certificate in the response body i.e Verifiable Credential Id.
 
 ### 5. View the Certificate Output (pdf)
-Our Certificate is finally issued, we can now see the pdf/document output of our issued certificate. Here we require the vc id and the templateId for the certificate to render the certificate.
+Our Certificate is finally issued, we can now see the pdf/document output of our issued certificate. Here we require the vc id from the previous step and the templateId for the certificate to render the certificate.
 
 ```http
   GET /api/v1/registry/credentials/{VERIFIABLE_CREDENTIAL_ID}
@@ -386,7 +386,7 @@ The output is a pdf file of the certificate
 The output document will contain all the stored properties/fields of the certificate
 
 ### 6. Verify the Certificate
-Our Certificate is finally issued, it's the time to verify whether it's real or not. The request will return us a message about the truthfulness of the certificate. This request endpoint will be hit the the verifier or someone viewing the certificate scans the QR code.
+Our Certificate is finally issued, it's the time to verify whether it's real or not. The request will return us a message about the truthfulness of the certificate. This request endpoint will be hit by the verifier or someone viewing the certificate scans the QR code.
 
 ```http
   GET /api/v1/registry/credentials/{VERIFIABLE_CREDENTIAL_ID}/verify
