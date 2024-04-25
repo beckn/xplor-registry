@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .wrapper {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .container {
+        width: 500px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-image: url("Frame.png");
+      }
+      .insidewrapper {
+        width: 100vw;
+        height: 305px;
+        border: 2px solid rgba(254, 241, 175, 0.71);
+      }
+      .imgwrapper {
+        height: 24.33px;
+        display: flex;
+        flex-direction:row;
+        align-items: center;
+        justify-content: space-between;
+        margin: 15px 15px 15px 15px;
+      }
+      .cetach {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-family: Cormorant Garamond;
+        
+      }
+      .cet {
+        font-size: 26.61px;
+        font-weight: 700;
+        line-height: 22.07px;
+        text-align: center;
+        color: #bc8e20;
+        
+      }
+      .ach {
+        font-size: 11.79px;
+        font-weight: 700;
+        line-height: 14.28px;
+        text-align: center;
+        color: #c79e2e;
+        width: 279.36px;
+        height: 10.58px;
+      }
+
+      .proudWrapper {
+        margin-top: 20px;
+        width: 100%;
+        height: 75.58px;
+        top: 52.16px;
+        gap: 0px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-direction: column;
+      }
+
+      .proud {
+        width: 178.84px;
+        height: 10.28px;
+        font-family: Inter;
+        font-size: 8px;
+        font-weight: 400;
+        line-height: 7.87px;
+        text-align: center;
+      }
+      .congratulations {
+        width: 285.82px;
+        font-family: Inter;
+        font-size: 8px;
+        font-weight: 400;
+        line-height: 8.62px;
+        text-align: center;
+        border-top: 1px solid grey;
+        padding-top: 10px;
+      }
+      .footer {
+        width: 100%;
+        height: 55px;
+        display: flex;
+        justify-content: center;
+      }
+      .footerinnner {
+        width: 100%;
+        margin-top: 30px;
+        max-width: 412.24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+      }
+      .name {
+        font-family: Inter;
+        font-size: 5.53px;
+        font-weight: 400;
+        line-height: 6.69px;
+        text-align: center;
+      }
+
+      .line {
+        width: 266.52px;
+        height: 0.1px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="container">
+        <div class="insidewrapper">
+          <div class="imgwrapper">
+            <div><img src="https://res.cloudinary.com/dsnb1bl19/image/upload/v1713956348/xplor-logo_rn5zhh.png" alt="img" width=45 /></div>
+            <div><img src="https://res.cloudinary.com/dsnb1bl19/image/upload/v1713956348/beckn-logo_key2ki.png" alt="img"  width=45 /></div>
+          </div>
+          <div class="cetach">
+            <div class="cet">CERTIFICATE</div>
+            <div class="ach">OF ACHIEVEMENT</div>
+          </div>
+          <div class="proudWrapper">
+            <div class="proud">THIS CERTIFICATE IS PROUDLY PRESENTED TO</div>
+            <!-- <hr class="line" /> -->
+            <p style="margin-bottom:10px">{{studentName}}</p>
+            <div class="congratulations">
+              Congratulations! A certificate awarded upon completing the skill: {{skillName}}. It validates the learner's achievement and proficiency in
+              the course subject.
+            </div>
+            <div style="margin-top:10px; font-size:12px">24 April, 2023</div>
+          </div>
+          <div class="footer">
+            <div class="footerinnner">
+            <div style="text-align:center">
+              <div>
+                <p style="margin-bottom:-7px; font-size: 14px;">Director Name</p>
+                <d>________________</d>
+                <div class="name">Director</div>
+              </div>
+            </div>
+              <div>
+                  <img style="margin-top:45px;" src="https://res.cloudinary.com/dsnb1bl19/image/upload/v1713965567/skill-logo_chtrr0.png" alt="img" height=42></div>
+              <div>
+                <div style="text-align:center">
+                <p style="margin-bottom:-7px; font-size: 14px;">{{instituteName}}</p>
+                <d>________________</d>
+                <div class="name">Institute Name</div>
+              </div>
+                      </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
