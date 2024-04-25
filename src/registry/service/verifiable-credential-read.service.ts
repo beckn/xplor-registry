@@ -7,6 +7,7 @@ import { ApiClient } from 'src/common/api-client'
 import { RegistryErrors } from 'src/common/constants/error-messages'
 import { ApiFileMimetype, FileUploadLocal } from 'src/common/constants/file-mimetype'
 import { RequestRoutes } from 'src/common/constants/request-routes'
+import { GrafanaLoggerService } from 'src/grafana/service/grafana.service'
 
 @Injectable()
 export class VerifiableCredentialReadService {
@@ -97,7 +98,12 @@ export class VerifiableCredentialReadService {
       res.download(fullPath, fileName)
       // Clear the file!
       setTimeout(async function () {
-        await fsPromises.unlink(fullPath).catch((err) => console.error(err))
+        await fsPromises.unlink(fullPath).catch((err) =>
+          new GrafanaLoggerService().sendDebug({
+            message: err,
+            methodName: this.getVcVisualDocument.name,
+          }),
+        )
       }, 3000)
     } else {
       res.status(404).send(RegistryErrors.CREDENTIAL_NOT_FOUND)

@@ -371,7 +371,7 @@ Our Certificate is finally issued, we can now see the pdf/document output of our
 ```http
   GET /api/v1/registry/credentials/{VERIFIABLE_CREDENTIAL_ID}
 ```
-Query params: 
+Headers: 
 | Key        | Type     | example                   |
 | :---------- | :------- | :---------------------------- |
 | `Accept`| `string` | `application/pdf` | 
