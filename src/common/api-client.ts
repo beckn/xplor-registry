@@ -36,7 +36,7 @@ export class ApiClient implements ApiImplementation {
     } catch (error) {
       new GrafanaLoggerService().sendDebug({
         message: `${InternalMessages.POST_REQUEST} ${error}`,
-        methodName: this.get.name,
+        methodName: this.post.name,
       })
     }
   }
@@ -48,7 +48,7 @@ export class ApiClient implements ApiImplementation {
     } catch (error) {
       new GrafanaLoggerService().sendDebug({
         message: `${InternalMessages.PUT_REQUEST} ${error}`,
-        methodName: this.get.name,
+        methodName: this.put.name,
       })
     }
   }
@@ -60,7 +60,7 @@ export class ApiClient implements ApiImplementation {
     } catch (error) {
       new GrafanaLoggerService().sendDebug({
         message: `${InternalMessages.DELETE_REQUEST} ${error}`,
-        methodName: this.get.name,
+        methodName: this.delete.name,
       })
     }
   }
