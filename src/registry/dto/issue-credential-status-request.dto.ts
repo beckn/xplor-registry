@@ -3,17 +3,14 @@ import { IsArray, IsNotEmpty, IsString, ValidateNested } from 'class-validator'
 
 export class CredentialReceiverDto {
   @IsString({ message: 'Wallet ID must be a string' })
-  @IsNotEmpty({ message: 'Wallet ID is required' })
   @ApiProperty({ description: 'ID of the wallet receiving the credential' })
   walletId: string
 
   @IsString({ message: 'VC name must be a string' })
-  @IsNotEmpty({ message: 'VC name is required' })
   @ApiProperty({ description: 'Name of the verifiable credential' })
   vcName: string
 
   @IsString({ message: 'Category must be a string' })
-  @IsNotEmpty({ message: 'Category is required' })
   @ApiProperty({ description: 'Category of the verifiable credential' })
   category: string
 
