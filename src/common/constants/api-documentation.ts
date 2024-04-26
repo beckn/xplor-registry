@@ -72,6 +72,13 @@ export const ISSUE_CREDENTIAL_API = {
   successResponseMessage: 'Verifiable credential issued successfully.',
 }
 
+export const SELF_ISSUE_CREDENTIAL_API = {
+  summary: 'User Upload Self Credential',
+  description: 'Creates a VC of the user uploaded document. Takes the file StoredUrl as certificateLink',
+  successResponseCode: 201,
+  successResponseMessage: 'Verifiable credential issued successfully.',
+}
+
 export const VERIFY_CREDENTIAL_API = {
   summary: 'Verify Credential',
   description:
