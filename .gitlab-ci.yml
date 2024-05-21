@@ -1,2 +1,26 @@
-include:
-  - https://gitlab.thewitslab.com/api/v4/projects/448/repository/files/nestjs.yml/raw?ref=main&private_token=$Boilerplate_Pipeline&.yaml
+stages:
+  - dev
+deploy:dev:
+  stage: dev
+  tags:
+    - gcp
+  script:
+    - echo "Deployment on Server."
+    - Path=$(pwd)
+    - cd /home/ubuntu/script && ./env_script.sh dev registry-nest-backend-dev $VAULT_TOKEN && cd $Path
+    - mv /home/ubuntu/script/.env $Path
+    - |
+      sshpass -p $Xplor_Password ssh $Xplor_Username@$Xplor_IP "
+        if [[ -d registry-nest-backend ]]; then
+          cd /home/ubuntu/registry-nest-backend
+          docker-compose down
+          cd /home/ubuntu && sudo rm -rf registry-nest-backend
+        fi "
+    - sshpass -p $Xplor_Password ssh $Xplor_Username@$Xplor_IP  "git clone -b develop https://user:'$GITLAB_ACCESS_TOKEN'@gitlab.thewitslab.com/wil-workspace/xplor/registry-nest-backend.git"
+    - sshpass -p $Xplor_Password scp .env $Xplor_Username@$Xplor_IP:/home/ubuntu/registry-nest-backend
+    - sshpass -p $Xplor_Password ssh -tt $Xplor_Username@$Xplor_IP  "
+        cd /home/ubuntu/registry-nest-backend && docker-compose up -d --build "
+    - echo "https://xplor-registry-nest-dev.thewitslab.com"
+
+
+
