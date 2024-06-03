@@ -1,6 +1,10 @@
 version: '3'
 services:
   xplor_registry_backend_service:
+     #logging:
+      #driver: "file-log-driver"
+      #options:
+        #fpath: "/docker/xplor_registry_backend_service.log"
     container_name: Xplor-registry-nest-backend
     build: .
     ports:
