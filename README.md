@@ -12,6 +12,7 @@ This service is responsible for creating, storing, deleting the Verifiable Crede
 - [Service Modules](#service-modules)
 - [Configurations](#configurations)
 - [Deployment](#deployment)
+- [Branching Strategy](#branching-strategy)
 - [Contributing](#contributing)
 
 
@@ -446,6 +447,51 @@ Deploying the Registry service can be achieved through:
 - **Docker**: Create a Docker image and launch your service.
 - **Kubernetes**: Use Kubernetes for scalable container management.
 - **CI/CD**: Automate deployment with CI/CD tools like Jenkins, GitLab CI, or GitHub Actions.
+
+## Branching Strategy
+
+To maintain a clear and organized workflow, we use the following branching strategy:
+
+1. **Feature Branches**
+
+   - For new features:
+   - Format: `feature/brief-description`
+   - Example: `feature/user-authentication`, `feature/shopping-cart`
+
+2. **Bugfix Branches**
+
+   - For fixing bugs:
+   - Format: `bugfix/brief-description`
+   - Example: `bugfix/login-error`, `bugfix/cart-not-updating`
+
+3. **Hotfix Branches**
+
+   - For urgent fixes that need to be deployed immediately:
+   - Format: `hotfix/brief-description`
+   - Example: `hotfix/critical-security-patch`, `hotfix/payment-gateway`
+
+4. **Improvement Branches**
+
+   - For improvements or refactoring that aren't new features:
+   - Format: `improvement/brief-description`
+   - Example: `improvement/code-refactor`, `improvement/ui-enhancements`
+
+5. **Release Branches**
+
+   - For preparing a release:
+   - Format: `release/version-number`
+   - Example: `release/1.0.0`, `release/2.1.3`
+
+6. **Experiment Branches**
+
+   - For experimental features or spikes:
+   - Format: `experiment/brief-description`
+   - Example: `experiment/new-ui-concept`, `experiment/performance-tuning`
+
+7. **Chore Branches**
+   - For routine tasks such as updating dependencies or documentation:
+   - Format: `chore/brief-description`
+   - Example: `chore/update-dependencies`, `chore/add-documentation`
 
 ## Contributing
 
