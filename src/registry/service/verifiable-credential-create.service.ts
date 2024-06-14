@@ -21,6 +21,7 @@ import { CreateCredentialRequestDto } from '../dto/create-credential-request.dto
 import { PushVCRequestBodyDto } from '../dto/push-vc-request-body.dto'
 import { VerifiableCredentialReadService } from './verifiable-credential-read.service'
 import { RegistryMessages } from '../../common/constants/message.constants'
+import { GrafanaLoggerService } from '../../grafana/service/grafana.service'
 @Injectable()
 export class VerifiableCredentialCreateService {
   constructor(
@@ -56,21 +57,30 @@ export class VerifiableCredentialCreateService {
       throw new BadRequestException(RegistryErrors.BAD_REQUEST_CREDENTIAL)
     }
 
-    const pushVCRequestBody = new PushVCRequestBodyDto(
-      vcResult?.credential?.id,
-      issueRequest.credentialReceiver.walletId,
-      VcType.RECEIVED,
-      issueRequest.credential.credentialSubject['type'],
-      issueRequest.credential.credentialIconUrl,
-      issueRequest.credential.templateId,
-      issueRequest.credentialReceiver.tags,
-      issueRequest.credentialReceiver.vcName,
-    )
     // Push this VC to User's wallet
-    await this.apiClient.post(
-      this.configService.get(WALLET_SERVICE_URL) + RequestRoutes.PUSH_CREDENTIAL_TO_WALLET,
-      pushVCRequestBody,
-    )
+    try {
+      const pushVCRequestBody = new PushVCRequestBodyDto(
+        vcResult?.credential?.id,
+        issueRequest.credentialReceiver.walletId,
+        VcType.RECEIVED,
+        issueRequest.credential.credentialSubject['type'],
+        issueRequest.credential.credentialIconUrl,
+        issueRequest.credential.templateId,
+        issueRequest.credentialReceiver.tags,
+        issueRequest.credentialReceiver.vcName,
+      )
+
+      await this.apiClient.post(
+        this.configService.get(WALLET_SERVICE_URL) + RequestRoutes.PUSH_CREDENTIAL_TO_WALLET,
+        pushVCRequestBody,
+      )
+    } catch (error) {
+      new GrafanaLoggerService().sendDebug({
+        message: error,
+        methodName: this.issueCredential.name,
+      })
+    }
+
     return vcResult
   }
 

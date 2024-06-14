@@ -9,6 +9,7 @@ import {
   GET_CREDENTIAL_SCHEMA_BY_ID_API,
   GET_CREDENTIAL_TEMPLATE_API,
   ISSUE_CREDENTIAL_API,
+  SELF_ISSUE_CREDENTIAL_API,
   UPDATE_SCHEMA_PROPERTIES_API,
   UPDATE_SCHEMA_STATUS_API,
   VERIFY_CREDENTIAL_API,
@@ -226,13 +227,13 @@ export class RegistryController {
    */
   @Post(ApiRoutes.CREDENTIAL)
   @ApiOperation({
-    summary: ISSUE_CREDENTIAL_API.summary,
-    description: ISSUE_CREDENTIAL_API.description,
+    summary: SELF_ISSUE_CREDENTIAL_API.summary,
+    description: SELF_ISSUE_CREDENTIAL_API.description,
   })
   @ApiBody({ type: IssueCredentialRequestEntityDto })
   @ApiResponse({
-    status: ISSUE_CREDENTIAL_API.successResponseCode,
-    description: ISSUE_CREDENTIAL_API.successResponseMessage,
+    status: SELF_ISSUE_CREDENTIAL_API.successResponseCode,
+    description: SELF_ISSUE_CREDENTIAL_API.successResponseMessage,
   })
   async createSelfIssuedCredential(@Body() issueRequest: CreateCredentialRequestDto) {
     return await this.vcCreateService.createSelfCredential(issueRequest)
